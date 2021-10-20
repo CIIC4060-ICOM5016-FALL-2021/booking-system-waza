@@ -8,3 +8,14 @@ Edgardo Figueroa Cruz
 
 Gabriel Rosa Ríos 
   - gabriel.rosa4@upr.edu
+
+
+## Database Connection
+|  |  |
+| ----------- | ----------- |
+|Host|	ec2-44-195-240-222.compute-1.amazonaws.com|
+|Database|	d4t9n848bvcar7|
+|Port|	5432|
+|User|	ohdxiligkvesze|
+|Pw|	8cd54a2a07d88668cb543bbaf0cfc45f523091779c47ca91f071d41798411507|
+|URI|postgresql://ec2-44-195-240-222.compute-1.amazonaws.com:5432/d4t9n848bvcar7|
