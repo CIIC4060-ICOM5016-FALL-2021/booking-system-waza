@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, abort
 import config
 from model.meeting import Meeting
+from model.invitee import Invitee
 
 app = Flask(__name__)
 
@@ -48,6 +49,47 @@ def meetings_detail(meeting_id):
 
     else:
         return meet
+
+
+@app.route('/waza/invitee/', methods=['POST', 'GET'])
+def invitees():
+    connection = config.connection
+    if request.method == "POST":
+        user_id = request.form.get('user_id', '')
+        meeting_id = request.form.get('meeting_id', '')
+        invite_id = Invitee.post(connection, user_id, meeting_id)
+        return {
+            "message": ("Invitee with id %s was inserted" % (invite_id))
+        }, 200
+    else:
+        response = jsonify(Invitee.get_all(connection))
+        response.status_code = 200
+        return response
+
+
+@app.route('/waza/invitee/<int:invitee_id>', methods=['DELETE', 'GET', 'PUT'])
+def invitees_detail(invitee_id):
+    connection = config.connection
+    invite = Invitee.get_first(connection, invitee_id)
+    if not invite:
+        abort(404)
+
+    if request.method == 'DELETE':
+        Invitee.delete(connection, invite["id"])
+        return {
+            "message": ("Invitee with id %s was removed" % (invite["id"]))
+        }, 200
+
+    elif request.method == 'PUT':
+        user_id = request.form.get('user_id', '')
+        meeting_id = request.form.get('meeting_id', '')
+        Invitee.put(connection, invite["id"], user_id, meeting_id)
+        return {
+            "message": ("Invitee with id %s was updated" % (invite["id"]))
+        }, 200
+
+    else:
+        return invite
 
 
 if __name__ == '__main__':
