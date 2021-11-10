@@ -1,65 +1,47 @@
+from flask_cors import CORS
 from flask import Flask, request, jsonify, abort
-import config
-from model.meeting import Meeting
+from controller.meeting import BaseMeeting
+from controller.invitee import BaseInvitee
 from model.room import Room
-from model.invitee import Invitee
+
+# Remove this line and file after removing dependencies to it
+import tbd_config
+#
 
 app = Flask(__name__)
+CORS(app)
 
-#------------------------------------
+
+# ------------------------------------
 # app routes for Meeting
-#------------------------------------
+# ------------------------------------
 @app.route('/waza/meeting/', methods=['POST', 'GET'])
 def meetings():
-    connection = config.connection
     if request.method == "POST":
-        created_by = request.form.get('created_by', '')
-        room_id = request.form.get('room_id', '')
-        start_at = request.form.get('start_at', '')
-        end_at = request.form.get('end_at', '')
-        meet_id = Meeting.post(connection, created_by, room_id, start_at, end_at)
-        return {
-            "message": ("Meeting with id %s was inserted" % (meet_id))
-        }, 200
+        return BaseMeeting().addNewMeeting(request.form)
     else:
-        response = jsonify(Meeting.get_all(connection))
-        response.status_code = 200
-        return response
+        return BaseMeeting().getAllMeetings()
 
 
-@app.route('/waza/meeting/<int:meeting_id>', methods=['DELETE', 'GET', 'PUT'])
-def meetings_detail(meeting_id):
-    connection = config.connection
-    meet = Meeting.get_first(connection, meeting_id)
-    if not meet:
-        abort(404)
-
-    if request.method == 'DELETE':
-        Meeting.delete(connection, meet["id"])
-        return {
-            "message": ("Meeting with id %s was removed" % (meet["id"]))
-        }, 200
-
+@app.route('/waza/meeting/<int:mid>', methods=['DELETE', 'GET', 'PUT'])
+def meetings_detail(mid):
+    if request.method == 'GET':
+        return BaseMeeting().getMeetingById(mid)
+    elif request.method == 'DELETE':
+        return BaseMeeting().deleteMeeting(mid)
     elif request.method == 'PUT':
-        created_by = request.form.get('created_by', '')
-        room_id = request.form.get('room_id', '')
-        start_at = request.form.get('start_at', '')
-        end_at = request.form.get('end_at', '')
-        Meeting.put(connection, meet["id"], created_by, room_id, start_at, end_at)
-        return {
-            "message": ("Meeting with id %s was updated" % (meet["id"]))
-        }, 200
-
+        return BaseMeeting().updateMeeting(mid, request.form)
     else:
-        return meet
+        return jsonify("Method Not Allowed"), 405
 
-#------------------------------------
+
+# ------------------------------------
 # app routes for Room
-#------------------------------------
+# ------------------------------------
 
 @app.route('/waza/room/', methods=['POST', 'GET'])
 def room():
-    connection = config.connection
+    connection = tbd_config.connection
     if request.method == "POST":
         roomtype_id = request.form.get('roomtype_id', '')
         department_id = request.form.get('department_id', '')
@@ -67,8 +49,8 @@ def room():
         capacity = request.form.get('capacity', '')
         room_id = Room.post(connection, roomtype_id, department_id, name, capacity)
         return {
-            "message": ("Room with id %s was inserted" % (room_id))
-        }, 200
+                   "message": ("Room with id %s was inserted" % (room_id))
+               }, 200
     else:
         response = jsonify(Room.get_all(connection))
         response.status_code = 200
@@ -77,7 +59,7 @@ def room():
 
 @app.route('/waza/room/<int:room_id>', methods=['DELETE', 'GET', 'PUT'])
 def room_detail(room_id):
-    connection = config.connection
+    connection = tbd_config.connection
     room = Room.get_first(connection, room_id)
     if not room:
         abort(404)
@@ -85,65 +67,45 @@ def room_detail(room_id):
     if request.method == 'DELETE':
         Room.delete(connection, room["id"])
         return {
-            "message": ("Room with id %s was removed" % (room["id"]))
-        }, 200
+                   "message": ("Room with id %s was removed" % (room["id"]))
+               }, 200
 
     elif request.method == 'PUT':
         roomtype_id = request.form.get('roomtype_id', '')
         department_id = request.form.get('department_id', '')
         name = request.form.get('name', '')
         capacity = request.form.get('capacity', '')
-        Meeting.put(connection, room["id"], roomtype_id, department_id, name, capacity)
+        # Meeting.put(connection, room["id"], roomtype_id, department_id, name, capacity)
         return {
-            "message": ("Room with id %s was updated" % (room["id"]))
-        }, 200
+                   "message": ("Room with id %s was updated" % (room["id"]))
+               }, 200
 
     else:
         return room
 
-#------------------------------------
+
+# ------------------------------------
 # app routes for Invitee
-#------------------------------------
-      
+# ------------------------------------
+
 @app.route('/waza/invitee/', methods=['POST', 'GET'])
 def invitees():
-    connection = config.connection
     if request.method == "POST":
-        user_id = request.form.get('user_id', '')
-        meeting_id = request.form.get('meeting_id', '')
-        invite_id = Invitee.post(connection, user_id, meeting_id)
-        return {
-            "message": ("Invitee with id %s was inserted" % (invite_id))
-        }, 200
+        return BaseInvitee().addNewInvitee(request.form)
     else:
-        response = jsonify(Invitee.get_all(connection))
-        response.status_code = 200
-        return response
+        return BaseInvitee().getAllInvitees()
 
 
-@app.route('/waza/invitee/<int:invitee_id>', methods=['DELETE', 'GET', 'PUT'])
-def invitees_detail(invitee_id):
-    connection = config.connection
-    invite = Invitee.get_first(connection, invitee_id)
-    if not invite:
-        abort(404)
-
-    if request.method == 'DELETE':
-        Invitee.delete(connection, invite["id"])
-        return {
-            "message": ("Invitee with id %s was removed" % (invite["id"]))
-        }, 200
-
+@app.route('/waza/invitee/<int:iid>', methods=['DELETE', 'GET', 'PUT'])
+def invitees_detail(iid):
+    if request.method == 'GET':
+        return BaseInvitee().getInviteeById(iid)
+    elif request.method == 'DELETE':
+        return BaseInvitee().deleteInvitee(iid)
     elif request.method == 'PUT':
-        user_id = request.form.get('user_id', '')
-        meeting_id = request.form.get('meeting_id', '')
-        Invitee.put(connection, invite["id"], user_id, meeting_id)
-        return {
-            "message": ("Invitee with id %s was updated" % (invite["id"]))
-        }, 200
-
+        return BaseInvitee().updateInvitee(iid, request.form)
     else:
-        return invite
+        return jsonify("Method Not Allowed"), 405
 
 
 if __name__ == '__main__':
