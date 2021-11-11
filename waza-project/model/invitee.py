@@ -62,3 +62,29 @@ class InviteeDAO:
             record = cur.fetchone()
             cur.close()
             return record
+
+    # get meetings that has overlaps with provided meeting for an specific user
+    def checkInviteeUnavailability(self, user_id, meeting_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """ 
+            SELECT 
+                i.id
+                ,i.user_id
+                ,i.meeting_id
+                ,m.start_at
+                ,m.end_at
+                ,i.created_at
+            FROM Invitee i
+            INNER JOIN Meeting m
+                ON i.meeting_id = m.id
+            INNER JOIN meeting me -- expected new meet
+            ON  me.id = %s AND
+            (
+                m.start_at < me.end_at
+                AND m.end_at > me.start_at
+            )
+            WHERE user_id = %s"""
+            cur.execute(qry, (meeting_id, user_id,))
+            records = cur.fetchall()
+            cur.close()
+            return records

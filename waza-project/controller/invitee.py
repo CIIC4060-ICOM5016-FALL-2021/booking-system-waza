@@ -22,6 +22,10 @@ class BaseInvitee:
         dao = InviteeDAO()
         user_id = data.get('user_id', '')
         meeting_id = data.get('meeting_id', '')
+        # check if is available
+        unavailable = dao.checkInviteeUnavailability(user_id, meeting_id)
+        if unavailable:
+            return jsonify("The user already has a meeting at this time."), 400
         iid = dao.addNewInvitee(user_id, meeting_id)
         return self.getInviteeById(iid)
 
