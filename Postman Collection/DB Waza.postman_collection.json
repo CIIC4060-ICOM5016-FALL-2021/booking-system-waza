@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "251848ec-d844-4759-83df-e8326d200a00",
+		"_postman_id": "106a5823-2c05-4a41-aa40-9674a247034e",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -56,7 +56,7 @@
 								},
 								{
 									"key": "end_at",
-									"value": "2022-11-06 12:00:00.000000",
+									"value": "2022-11-05 11:00:00.000000",
 									"type": "text"
 								}
 							]
@@ -92,7 +92,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/8",
+							"raw": "http://127.0.0.1:5000/waza/meeting/12",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -104,7 +104,7 @@
 							"path": [
 								"waza",
 								"meeting",
-								"8"
+								"12"
 							]
 						}
 					},
@@ -141,7 +141,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/2",
+							"raw": "http://127.0.0.1:5000/waza/meeting/10",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -153,7 +153,7 @@
 							"path": [
 								"waza",
 								"meeting",
-								"2"
+								"10"
 							],
 							"query": [
 								{
@@ -172,7 +172,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/3",
+							"raw": "http://127.0.0.1:5000/waza/meeting/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -184,9 +184,226 @@
 							"path": [
 								"waza",
 								"meeting",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitee",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/waza/invitee",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"waza",
+								"invitee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "meeting_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/waza/invitee",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"waza",
+								"invitee"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/waza/invitee/7",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"waza",
+								"invitee",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "meeting_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/waza/invitee/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"waza",
+								"invitee",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/waza/invitee/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"waza",
+								"invitee",
 								"3"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}
