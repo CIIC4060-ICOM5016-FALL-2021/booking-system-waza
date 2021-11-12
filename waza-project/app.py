@@ -115,11 +115,11 @@ def invitees_detail(iid):
 # ------------------------------------
 @app.route('/waza/statistics/user/most-used-room', methods=['GET'])
 def statistics_user_most_used_room():
-    return BaseStatisticsUser().getMostUsedRoomWithUsers()
+    return BaseStatisticsUser().getMostUsedRoomWithUsers(request.args)
 
 @app.route('/waza/statistics/user/most-booked', methods=['GET'])
 def statistics_user_most_booked():
-    return BaseStatisticsUser().getMostBookedUsers()
+    return BaseStatisticsUser().getMostBookedPeerUsers(request.args)
 
 # ------------------------------------
 # app routes for Global Statistics

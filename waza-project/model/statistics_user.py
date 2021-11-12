@@ -12,32 +12,50 @@ class StatisticsUserDAO:
                                      password=pg_config['password'],
                                      )
 
-    def getMostUsedRoomWithUsers(self):
+    def getMostUsedRoomWithUsers(self, user_id):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
                 SELECT
-                    i.user_id, m.room_id, count(*) as room_count
+                    r.name AS room_name
+                    ,rt.name AS room_type
+                    ,d.name AS department_name
+                    ,COUNT(*) AS room_count
                 FROM Meeting m
-                INNER JOIN Invitee i on m.id = i.meeting_id --get only records with invitees
-                GROUP BY i.user_id, m.room_id
-                order by count(*) desc
+                INNER JOIN Invitee i ON i.user_id=%s AND m.id = i.meeting_id
+                LEFT JOIN room r ON r.id = m.room_id
+                LEFT JOIN roomtype rt ON r.roomtype_id = rt.id
+                LEFT JOIN department d ON r.department_id = d.id
+                GROUP BY r.name, rt.name, d.name
+                ORDER BY COUNT(*) DESC
+                LIMIT 1;
             """
-            cur.execute(qry)
+            cur.execute(qry, (user_id, ))
             records = cur.fetchall()
             cur.close()
             return records
 
-    def getMostBookedUsers(self):
+    def getMostBookedPeerUsers(self, user_id):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
                 SELECT
-                       user_id, count(*) AS meetings_count
-                FROM Meeting
-                INNER JOIN Invitee i on meeting.id = i.meeting_id --get only records with invitees
-                GROUP BY i.user_id
-                order by count(*) desc
+                    u.first_name
+                    ,u.last_name
+                    ,u.email
+                    ,u.phone
+                    ,count(*) AS meetings_count
+                FROM invitee i
+                LEFT JOIN "User" u ON u.id = i.user_id
+                WHERE
+                    i.user_id <> %s
+                    AND i.meeting_id IN
+                    (
+                        SELECT meeting_id FROM invitee i2 WHERE i2.user_id = %s
+                    )
+                GROUP BY u.first_name, u.last_name, u.email, u.phone
+                ORDER BY COUNT(*) DESC
+                LIMIT 1;
             """
-            cur.execute(qry)
+            cur.execute(qry, (user_id, user_id, ))
             records = cur.fetchall()
             cur.close()
             return records

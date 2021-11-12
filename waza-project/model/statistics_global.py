@@ -15,15 +15,16 @@ class StatisticsGlobalDAO:
     def getBusiestHours(self):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
-                SELECT
-                    h.hour, count(*)
-                FROM Meeting m
-                INNER JOIN statistics_hours h
-                    on h.hour >= CAST(TO_CHAR(m.start_at, 'HH24') AS INT)
-                           and h.hour < CAST(TO_CHAR(m.end_at, 'HH24') AS INT) -- dont consider the end time, because it is not an hour that may not be used completely
-                GROUP BY H.hour
-                ORDER BY count(*) DESC
-                LIMIT 5;
+            SELECT
+                h.hour as meeting_hour
+                , count(*)
+            FROM Meeting m
+            INNER JOIN statistics_hours h
+                on h.hour >= CAST(TO_CHAR(m.start_at, 'HH24') AS INT)
+                       and h.hour < CAST(TO_CHAR(m.end_at, 'HH24') AS INT) -- dont consider the end time, because it is not an hour that may not be used completely
+            GROUP BY meeting_hour
+            ORDER BY count(*) DESC
+            LIMIT 5;
             """
             cur.execute(qry)
             records = cur.fetchall()
@@ -33,12 +34,17 @@ class StatisticsGlobalDAO:
     def getMostBookedUsers(self):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
-                SELECT
-                    i.user_id, count(*) 
-                FROM Invitee i
-                GROUP BY i.user_id
-                order by count(*) desc
-                LIMIT 10
+            SELECT
+                u.first_name
+                ,u.last_name
+                ,u.email
+                ,u.phone
+                ,count(*)
+            FROM Invitee i
+            LEFT JOIN "User" u on i.user_id = U.id
+            GROUP BY u.first_name, u.last_name, u.email, u.phone, i.user_id
+            order by count(*) desc
+            LIMIT 10;
             """
             cur.execute(qry)
             records = cur.fetchall()
@@ -48,12 +54,18 @@ class StatisticsGlobalDAO:
     def getMostBookedRooms(self):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
-                SELECT
-                    m.room_id, count(*) 
-                FROM Meeting m
-                GROUP BY m.room_id
-                ORDER BY count(*) DESC
-                LIMIT 10
+            SELECT
+                r.name as room_name
+                ,rt.name AS room_type
+                ,d.name as department_name
+                , count(*)
+            FROM Meeting m
+            LEFT JOIN room r ON r.id = m.room_id
+            LEFT JOIN roomtype rt ON r.roomtype_id = rt.id
+            LEFT JOIN department d ON r.department_id = d.id
+            GROUP BY r.name, rt.name, d.name
+            ORDER BY count(*) DESC
+            LIMIT 10;
             """
             cur.execute(qry)
             records = cur.fetchall()

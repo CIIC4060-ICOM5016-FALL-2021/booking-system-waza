@@ -3,12 +3,12 @@ from flask import jsonify
 
 
 class BaseStatisticsUser:
-    def getMostUsedRoomWithUsers(self):
+    def getMostUsedRoomWithUsers(self, data):
         dao = StatisticsUserDAO()
-        result = dao.getMostUsedRoomWithUsers()
+        result = dao.getMostUsedRoomWithUsers(data['user_id'])
         return jsonify(result), 200
 
-    def getMostBookedUsers(self):
+    def getMostBookedPeerUsers(self, data):
         dao = StatisticsUserDAO()
-        result = dao.getMostBookedUsers()
+        result = dao.getMostBookedPeerUsers(data['user_id'])
         return jsonify(result), 200
