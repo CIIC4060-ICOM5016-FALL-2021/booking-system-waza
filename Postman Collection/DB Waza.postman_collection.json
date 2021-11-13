@@ -101,17 +101,17 @@
 								},
 								{
 									"key": "room_id",
-									"value": "1",
+									"value": "2",
 									"type": "text"
 								},
 								{
 									"key": "start_at",
-									"value": "2021-11-11 11:00:00",
+									"value": "2021-12-11 11:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-11-11 11:45:00",
+									"value": "2021-12-11 11:45:00",
 									"type": "text"
 								}
 							]
@@ -258,12 +258,12 @@
 							"formdata": [
 								{
 									"key": "user_id",
-									"value": "3",
+									"value": "2",
 									"type": "text"
 								},
 								{
 									"key": "meeting_id",
-									"value": "8",
+									"value": "11",
 									"type": "text"
 								}
 							]
@@ -666,6 +666,128 @@
 								"waza",
 								"roomschedule",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistics - User",
+			"item": [
+				{
+					"name": "Most Used Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/user/most-used-room?user_id=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"user",
+								"most-used-room"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Most Booked User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/user/most-booked?user_id=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"user",
+								"most-booked"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistics - Global",
+			"item": [
+				{
+					"name": "Get Busiest Hours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/busiest-hours",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"busiest-hours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Most Booked Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/most-booked-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"most-booked-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Most Booked Rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/most-booked-rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"most-booked-rooms"
 							]
 						}
 					},
