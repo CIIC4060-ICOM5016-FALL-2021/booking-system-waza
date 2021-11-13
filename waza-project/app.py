@@ -4,6 +4,8 @@ from controller.meeting import BaseMeeting
 from controller.invitee import BaseInvitee
 from controller.statistics_user import BaseStatisticsUser
 from controller.statistics_global import BaseStatisticsGlobal
+from controller.room_schedule import BaseRoomSchedule
+from controller.user_schedule import BaseUserSchedule
 from model.room import Room
 
 # Remove this line and file after removing dependencies to it
@@ -86,6 +88,50 @@ def room_detail(room_id):
         return room
 
 
+# ------------------------------------
+# app routes for RoomSchedule
+# ------------------------------------
+
+@app.route('/waza/roomschedule/', methods=['POST', 'GET'])
+def roomschedule():
+    if request.method == "POST":
+        return BaseRoomSchedule().addNewRoomSchedule(request.form)
+    else:
+        return BaseRoomSchedule().getAllRoomSchedule()
+
+@app.route('/waza/roomschedule/<int:rsid>', methods=['DELETE', 'GET', 'PUT'])
+def roomschedule_detail(rsid):
+    if request.method == 'GET':
+        return BaseRoomSchedule().getRoomScheduleById(rsid)
+    elif request.method == 'DELETE':
+        return BaseRoomSchedule().deleteRoomSchedule(rsid)
+    elif request.method == 'PUT':
+        return BaseRoomSchedule().updateRoomSchedule(rsid, request.form)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# ------------------------------------
+# app routes for RoomSchedule
+# ------------------------------------
+
+@app.route('/waza/userschedule/', methods=['POST', 'GET'])
+def userschedule():
+    if request.method == "POST":
+        return BaseUserSchedule().addNewUserSchedule(request.form)
+    else:
+        return BaseUserSchedule().getAllUserSchedule()
+
+@app.route('/waza/userschedule/<int:usid>', methods=['DELETE', 'GET', 'PUT'])
+def userschedule_detail(usid):
+    if request.method == 'GET':
+        return BaseUserSchedule().getUserScheduleById(usid)
+    elif request.method == 'DELETE':
+        return BaseUserSchedule().deleteUserSchedule(usid)
+    elif request.method == 'PUT':
+        return BaseUserSchedule().updateUserSchedule(usid, request.form)
+    else:
+        return jsonify("Method Not Allowed"), 405
 # ------------------------------------
 # app routes for Invitee
 # ------------------------------------
