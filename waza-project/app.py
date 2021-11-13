@@ -2,6 +2,8 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, abort
 from controller.meeting import BaseMeeting
 from controller.invitee import BaseInvitee
+from controller.statistics_user import BaseStatisticsUser
+from controller.statistics_global import BaseStatisticsGlobal
 from controller.room_schedule import BaseRoomSchedule
 from controller.user_schedule import BaseUserSchedule
 from model.room import Room
@@ -152,6 +154,33 @@ def invitees_detail(iid):
         return BaseInvitee().updateInvitee(iid, request.form)
     else:
         return jsonify("Method Not Allowed"), 405
+
+
+# ------------------------------------
+# app routes for User Statistics
+# ------------------------------------
+@app.route('/waza/statistics/user/most-used-room', methods=['GET'])
+def statistics_user_most_used_room():
+    return BaseStatisticsUser().getMostUsedRoomWithUsers(request.args)
+
+@app.route('/waza/statistics/user/most-booked', methods=['GET'])
+def statistics_user_most_booked():
+    return BaseStatisticsUser().getMostBookedPeerUsers(request.args)
+
+# ------------------------------------
+# app routes for Global Statistics
+# ------------------------------------
+@app.route('/waza/statistics/global/busiest-hours', methods=['GET'])
+def statistics_global_busiest_hours():
+    return BaseStatisticsGlobal().getBusiestHours()
+
+@app.route('/waza/statistics/global/most-booked-users', methods=['GET'])
+def statistics_global_most_booked_users():
+    return BaseStatisticsGlobal().getMostBookedUsers()
+
+@app.route('/waza/statistics/global/most-booked-rooms', methods=['GET'])
+def statistics_global_most_booked_rooms():
+    return BaseStatisticsGlobal().getMostBookedRooms()
 
 
 if __name__ == '__main__':
