@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, abort
 from controller.meeting import BaseMeeting
 from controller.invitee import BaseInvitee
+from controller.user import BaseUser
 from model.room import Room
 
 # Remove this line and file after removing dependencies to it
@@ -110,6 +111,24 @@ def invitees_detail(iid):
 # ------------------------------------
 # app routes for Users
 # ------------------------------------
+@app.route('waza/user/', methods=['POST', 'GET'])
+def users():
+    if request.method == "POST":
+        return BaseUser().addNewUser(request.form)
+    else:
+        return BaseUser().getAllUsers()
+
+@app.route('waza/user/<int:uid>', methods=['DELETE', 'GET', 'PUT'])
+def users_detail(uid):
+    if request.method == "GET":
+        return BaseUser().getUserById(uid)
+    elif request.method == "DELETE":
+        return BaseUser().deleteUser(uid)
+    elif request.method == "PUT":
+        return BaseUser().updateUser(uid, request.form)
+    else:
+        return jsonify("Method Not Allowed"),405
+
 
 if __name__ == '__main__':
     app.run()
