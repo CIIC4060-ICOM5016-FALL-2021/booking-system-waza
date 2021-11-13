@@ -107,6 +107,9 @@ def invitees_detail(iid):
     else:
         return jsonify("Method Not Allowed"), 405
 
+# ------------------------------------
+# app routes for Users
+# ------------------------------------
 
 if __name__ == '__main__':
     app.run()
