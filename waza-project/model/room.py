@@ -34,7 +34,7 @@ class RoomDAO:
     def getRoomById(connection, room_id: int):
         with connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = "SELECT * FROM Room WHERE id = %s;"
-            cur.execute(qry, (str(room_id)))
+            cur.execute(qry, ((room_id),))
             record = cur.fetchone()
             cur.close()
             return record
@@ -52,7 +52,7 @@ class RoomDAO:
     def deleteRoom(connection, room_id: int):
         with connection.cursor() as cur:
             qry = "DELETE FROM Room WHERE id = %s;"
-            cur.execute(qry, str(room_id))
+            cur.execute(qry, (room_id,))
             connection.commit()
             cur.close()
 
