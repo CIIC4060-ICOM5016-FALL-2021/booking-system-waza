@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, abort
 from controller.meeting import BaseMeeting
 from controller.invitee import BaseInvitee
+from controller.user import BaseUser
 from controller.statistics_user import BaseStatisticsUser
 from controller.statistics_global import BaseStatisticsGlobal
 from controller.room_schedule import BaseRoomSchedule
@@ -154,6 +155,27 @@ def invitees_detail(iid):
         return BaseInvitee().updateInvitee(iid, request.form)
     else:
         return jsonify("Method Not Allowed"), 405
+
+# ------------------------------------
+# app routes for Users
+# ------------------------------------
+@app.route('waza/user/', methods=['POST', 'GET'])
+def users():
+    if request.method == "POST":
+        return BaseUser().addNewUser(request.form)
+    else:
+        return BaseUser().getAllUsers()
+
+@app.route('waza/user/<int:uid>', methods=['DELETE', 'GET', 'PUT'])
+def users_detail(uid):
+    if request.method == "GET":
+        return BaseUser().getUserById(uid)
+    elif request.method == "DELETE":
+        return BaseUser().deleteUser(uid)
+    elif request.method == "PUT":
+        return BaseUser().updateUser(uid, request.form)
+    else:
+        return jsonify("Method Not Allowed"),405
 
 
 # ------------------------------------
