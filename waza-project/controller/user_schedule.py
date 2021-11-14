@@ -72,3 +72,10 @@ class BaseUserSchedule:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
+    def getUserAvailabilityById(self, uid):
+        dao = UserScheduleDAO()
+        result = dao.allDayAvailability(uid)
+        if result:
+            return result
+        return jsonify("NOT FOUND"), 404
+

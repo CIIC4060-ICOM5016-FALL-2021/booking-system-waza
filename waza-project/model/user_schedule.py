@@ -1,4 +1,4 @@
-#from config.dbconfig import pg_config
+from config.dbconfig import pg_config
 import psycopg2
 import psycopg2.extras
 from datetime import datetime
@@ -6,13 +6,6 @@ from datetime import datetime
 
 class UserScheduleDAO:
     def __init__(self):
-        pg_config = {
-            'host': 'ec2-44-195-240-222.compute-1.amazonaws.com',
-            'port': '5432',
-            'dbname': 'd4t9n848bvcar7',
-            'user': 'ohdxiligkvesze',
-            'password': '8cd54a2a07d88668cb543bbaf0cfc45f523091779c47ca91f071d41798411507'
-        }
         self.conn = psycopg2.connect(host=pg_config['host'],
                                      port=pg_config['port'],
                                      dbname=pg_config['dbname'],
@@ -87,6 +80,35 @@ class UserScheduleDAO:
                 SELECT * FROM user_schedule WHERE user_id = %s AND start_at < %s AND end_at > %s
             """
             fields = (usid, user_id, end_at, start_at,) if usid is not None else (user_id, end_at, start_at,)
+            cur.execute(qry, fields)
+            records = cur.fetchall()
+            cur.close()
+            return records
+
+    def allDayAvailability(self, user_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """ 
+                WITH user_schedule AS (
+            SELECT
+            us.user_id
+            ,us.start_at
+            ,us.end_at
+            ,us.created_at
+            FROM userschedule us
+            UNION
+            SELECT
+            i.user_id
+            ,m.start_at
+            ,m.end_at
+            ,m.created_at
+            FROM invitee i
+            LEFT JOIN meeting m on m.id = i.meeting_id
+            )
+
+            SELECT * FROM user_schedule us
+            WHERE us.user_id = %s AND us.start_at BETWEEN current_date and (current_date + INTERVAL '1day')
+            """
+            fields = (user_id,)
             cur.execute(qry, fields)
             records = cur.fetchall()
             cur.close()

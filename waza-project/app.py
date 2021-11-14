@@ -20,19 +20,19 @@ CORS(app)
 @app.route('/waza/meeting/', methods=['POST', 'GET'])
 def meetings():
     if request.method == "POST":
-        return BaseMeeting().addNewMeeting(request.form)
+        return BaseMeeting().addNewMeeting(request.form, request.args)
     else:
-        return BaseMeeting().getAllMeetings()
+        return BaseMeeting().getAllMeetings(request.args)
 
 
 @app.route('/waza/meeting/<int:mid>', methods=['DELETE', 'GET', 'PUT'])
 def meetings_detail(mid):
     if request.method == 'GET':
-        return BaseMeeting().getMeetingById(mid)
+        return BaseMeeting().getMeetingById(mid, request.args)
     elif request.method == 'DELETE':
-        return BaseMeeting().deleteMeeting(mid)
+        return BaseMeeting().deleteMeeting(mid, request.args)
     elif request.method == 'PUT':
-        return BaseMeeting().updateMeeting(mid, request.form)
+        return BaseMeeting().updateMeeting(mid, request.form, request.args)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -85,7 +85,7 @@ def roomschedule_detail(rsid):
 
 
 # ------------------------------------
-# app routes for RoomSchedule
+# app routes for UserSchedule
 # ------------------------------------
 
 @app.route('/waza/userschedule/', methods=['POST', 'GET'])
@@ -106,6 +106,10 @@ def userschedule_detail(usid):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
+@app.route('/waza/user/availability/<int:uid>', methods=['GET'])
+def user_availability(uid):
+    return BaseUserSchedule().getUserAvailabilityById(uid)
 
 # ------------------------------------
 # app routes for Invitee
@@ -150,6 +154,8 @@ def users_detail(uid):
         return BaseUser().updateUser(uid, request.form)
     else:
         return jsonify("Method Not Allowed"),405
+
+
 
 
 # ------------------------------------
