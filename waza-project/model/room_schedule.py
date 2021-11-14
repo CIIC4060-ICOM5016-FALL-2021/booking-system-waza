@@ -90,3 +90,34 @@ class RoomScheduleDAO:
             records = cur.fetchall()
             cur.close()
             return records
+
+    def allDayAvailability(self, room_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """ 
+                   WITH room_schedule AS (
+               SELECT
+               rs.room_id
+               ,rs.start_at
+               ,rs.end_at
+               ,rs.created_at
+               FROM roomschedule rs
+               UNION
+               SELECT
+               m.room_id
+               ,m.start_at
+               ,m.end_at
+               ,m.created_at
+               FROM meeting m
+              
+               )
+
+               SELECT * FROM room_schedule rs
+               WHERE rs.room_id = %s AND rs.start_at BETWEEN '2021-12-01' and ('2021-12-02')
+               """
+            fields = (room_id,)
+            cur.execute(qry, fields)
+            records = cur.fetchall()
+            cur.close()
+            return records
+#               SELECT rs.id, rs.room_id, rs.start_at, rs.end_at FROM roomschedule rs
+#              WHERE rs.room_id = %s AND rs.start_at BETWEEN '2021-12-01' and ('2021-12-02 17:00:00');

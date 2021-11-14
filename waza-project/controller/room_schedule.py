@@ -83,3 +83,10 @@ class BaseRoomSchedule:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
+    def getRoomAvailabilityById(self, rid):
+        dao = RoomScheduleDAO()
+        result = dao.allDayAvailability(rid)
+        if result:
+            return jsonify(result), 200
+        return jsonify("NOT FOUND"), 404
+
