@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f3978edd-e62f-45ec-b72a-f417754c7135",
+		"_postman_id": "818339bb-4b45-4d00-b6fb-34e89116d674",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -516,6 +516,15 @@
 								"2"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "All day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}
