@@ -35,7 +35,7 @@ class BaseRoomSchedule:
         if start_at > end_at:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
         # check if there are other schedules at this time
-        unavailable = dao.checkRoomScheduleSlot(room_id, start_at, end_at)
+        unavailable = dao.checkRoomScheduleSlot(None, room_id, start_at, end_at)
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
         rsid = dao.addNewRoomSchedule(room_id, start_at, end_at)
@@ -58,7 +58,7 @@ class BaseRoomSchedule:
         if start_at > end_at:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
         # check if there are other schedules at this time
-        unavailable = dao.checkRoomScheduleSlot(room_id, start_at, end_at)
+        unavailable = dao.checkRoomScheduleSlot(rsid, room_id, start_at, end_at)
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
         result = dao.updateRoomSchedule(rsid, room_id, start_at, end_at)

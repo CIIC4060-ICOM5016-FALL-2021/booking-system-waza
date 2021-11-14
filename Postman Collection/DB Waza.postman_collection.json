@@ -142,14 +142,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/5",
+							"raw": "{{base_url}}/waza/meeting/1093",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"5"
+								"1093"
 							]
 						}
 					},
@@ -212,14 +212,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/1",
+							"raw": "{{base_url}}/waza/meeting/3",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -294,14 +294,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/invitee/5",
+							"raw": "{{base_url}}/waza/invitee/9",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"invitee",
-								"5"
+								"9"
 							]
 						}
 					},
@@ -317,7 +317,7 @@
 							"formdata": [
 								{
 									"key": "user_id",
-									"value": "2",
+									"value": "20",
 									"type": "text"
 								},
 								{
@@ -328,14 +328,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/waza/invitee/1",
+							"raw": "{{base_url}}/waza/invitee/9",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"invitee",
-								"1"
+								"9"
 							],
 							"query": [
 								{
@@ -354,14 +354,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/invitee/3",
+							"raw": "{{base_url}}/waza/invitee/9",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"invitee",
-								"3"
+								"9"
 							]
 						}
 					},
@@ -788,6 +788,178 @@
 								"statistics",
 								"global",
 								"most-booked-rooms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "role_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "john.doe@upr.edu",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "1231231234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/user/103",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "role_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Jamie",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "jane.doe@uprm.edu",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "1231221212",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/user/103",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user",
+								"103"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/user/103",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user",
+								"103"
 							]
 						}
 					},

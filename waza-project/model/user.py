@@ -48,10 +48,10 @@ class UserDAO:
             cur.close()
             return True
 
-    def updateUser(self, role_id, first_name, last_name, email, phone,):
+    def updateUser(self, uid, role_id, first_name, last_name, email, phone,):
         with self.conn.cursor() as cur:
-            qry = "Update User SET role_id = (%s), first_name = (%s), last_name = (%s), email = (%s), phone = (%s) WHERE id = (%s);"
-            cur.execute(qry, (user_id, first_name, last_name, email, phone, ))
+            qry = "Update \"User\" SET role_id = (%s), first_name = (%s), last_name = (%s), email = (%s), phone = (%s) WHERE id = (%s);"
+            cur.execute(qry, (role_id, first_name, last_name, email, phone, uid, ))
             self.conn.commit()
             cur.close()
             return True

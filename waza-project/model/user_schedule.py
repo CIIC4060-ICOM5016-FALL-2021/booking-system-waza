@@ -55,16 +55,18 @@ class UserScheduleDAO:
             cur.close()
             return True
 
-    def checkUserScheduleSlot(self, user_id, start_at, end_at):
+    def checkUserScheduleSlot(self, usid, user_id, start_at, end_at):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """ 
                 WITH user_schedule AS (
                     SELECT
-                    rs.user_id
-                    ,rs.start_at
-                    ,rs.end_at
-                    ,rs.created_at
-                    FROM userschedule rs
+                    us.user_id
+                    ,us.start_at
+                    ,us.end_at
+                    ,us.created_at
+                    FROM userschedule us"""
+            qry += """  WHERE us.id <> %s  """ if usid is not None else "" #exclude current user schedule (used for updates)
+            qry += """      
                     UNION
                     SELECT
                     i.user_id
@@ -77,7 +79,8 @@ class UserScheduleDAO:
                 
                 SELECT * FROM user_schedule WHERE user_id = %s AND start_at < %s AND end_at > %s
             """
-            cur.execute(qry, (user_id, end_at, start_at,))
+            fields = (usid, user_id, end_at, start_at,) if usid is not None else (user_id, end_at, start_at,)
+            cur.execute(qry, fields)
             records = cur.fetchall()
             cur.close()
             return records

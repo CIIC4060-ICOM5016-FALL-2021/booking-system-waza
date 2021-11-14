@@ -10,9 +10,9 @@ class BaseUserSchedule:
         return jsonify(invitees), 200
 
 
-    def getUserScheduleById(self, rsid):
+    def getUserScheduleById(self, usid):
         dao = UserScheduleDAO()
-        invitee = dao.getUserScheduleById(rsid)
+        invitee = dao.getUserScheduleById(usid)
         if not invitee:
             return jsonify("Not Found"), 404
         else:
@@ -35,14 +35,14 @@ class BaseUserSchedule:
         if start_at > end_at:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
         # check if there are other schedules at this time
-        unavailable = dao.checkUserScheduleSlot(user_id, start_at, end_at)
+        unavailable = dao.checkUserScheduleSlot(None, user_id, start_at, end_at)
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
-        rsid = dao.addNewUserSchedule(user_id, start_at, end_at)
-        return self.getUserScheduleById(rsid)
+        usid = dao.addNewUserSchedule(user_id, start_at, end_at)
+        return self.getUserScheduleById(usid)
 
 
-    def updateUserSchedule(self, rsid, data):
+    def updateUserSchedule(self, usid, data):
         # TODO: validate user role
         dao = UserScheduleDAO()
         user_id = data.get('user_id', '')
@@ -58,16 +58,16 @@ class BaseUserSchedule:
         if start_at > end_at:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
         # check if there are other schedules at this time
-        unavailable = dao.checkUserScheduleSlot(user_id, start_at, end_at)
+        unavailable = dao.checkUserScheduleSlot(usid, user_id, start_at, end_at)
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
-        result = dao.updateUserSchedule(rsid, user_id, start_at, end_at)
-        return self.getUserScheduleById(rsid)
+        result = dao.updateUserSchedule(usid, user_id, start_at, end_at)
+        return self.getUserScheduleById(usid)
 
 
-    def deleteUserSchedule(self, rsid):
+    def deleteUserSchedule(self, usid):
         dao = UserScheduleDAO()
-        result = dao.deleteUserSchedule(rsid)
+        result = dao.deleteUserSchedule(usid)
         if result:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404

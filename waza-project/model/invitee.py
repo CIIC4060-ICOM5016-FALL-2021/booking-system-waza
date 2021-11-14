@@ -57,7 +57,7 @@ class InviteeDAO:
 
     def getInviteeByMeetingId(self, mid):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            qry = "SELECT * FROM Invitee WHERE meeting_id = %s;"
+            qry = "SELECT i.*, m.start_at, m.end_at FROM Invitee i LEFT JOIN Meeting m ON i.meeting_id = m.id WHERE meeting_id = %s;"
             cur.execute(qry, (mid,))
             record = cur.fetchone()
             cur.close()

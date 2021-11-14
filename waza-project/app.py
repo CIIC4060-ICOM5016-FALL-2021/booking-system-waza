@@ -159,14 +159,14 @@ def invitees_detail(iid):
 # ------------------------------------
 # app routes for Users
 # ------------------------------------
-@app.route('waza/user/', methods=['POST', 'GET'])
+@app.route('/waza/user/', methods=['POST', 'GET'])
 def users():
     if request.method == "POST":
         return BaseUser().addNewUser(request.form)
     else:
         return BaseUser().getAllUsers()
 
-@app.route('waza/user/<int:uid>', methods=['DELETE', 'GET', 'PUT'])
+@app.route('/waza/user/<int:uid>', methods=['DELETE', 'GET', 'PUT'])
 def users_detail(uid):
     if request.method == "GET":
         return BaseUser().getUserById(uid)

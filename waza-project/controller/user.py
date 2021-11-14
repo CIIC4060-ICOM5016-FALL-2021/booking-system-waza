@@ -2,16 +2,15 @@ from model.user import UserDAO
 from flask import jsonify
 
 
-
 class BaseUser:
     def getAllUsers(self):
         dao = UserDAO()
         users = dao.getAllUsers()
         return jsonify(users), 200
 
-    def getUserById(self, mid):
+    def getUserById(self, uid):
         dao = UserDAO()
-        user = dao.getUserById(mid)
+        user = dao.getUserById(uid)
         if not user:
             return jsonify("Not Found"), 404
         else:
@@ -26,10 +25,10 @@ class BaseUser:
         email = data.get('email', '')
         phone = data.get('phone', '')
         
-        mid = dao.addNewUser(role_id, first_name, last_name, email, phone)
-        return self.getUserById(mid)
+        uid = dao.addNewUser(role_id, first_name, last_name, email, phone)
+        return self.getUserById(uid)
 
-    def updateUser(self, mid, data):
+    def updateUser(self, uid, data):
         dao = UserDAO()
         
         role_id = data.get('role_id', '')
@@ -38,12 +37,12 @@ class BaseUser:
         email = data.get('email', '')
         phone = data.get('phone', '')
         
-        result = dao.updateUser(role_id, first_name, last_name, email, phone)
-        return self.getUserById(result)
+        result = dao.updateUser(uid, role_id, first_name, last_name, email, phone)
+        return self.getUserById(uid)
 
-    def deleteUser(self, mid):
+    def deleteUser(self, uid):
         dao = UserDAO()
-        result = dao.deleteUser(mid)
+        result = dao.deleteUser(uid)
         if result:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
