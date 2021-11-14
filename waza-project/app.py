@@ -7,7 +7,7 @@ from controller.statistics_user import BaseStatisticsUser
 from controller.statistics_global import BaseStatisticsGlobal
 from controller.room_schedule import BaseRoomSchedule
 from controller.user_schedule import BaseUserSchedule
-from model.room import Room
+from model.room import RoomDAO
 
 # Remove this line and file after removing dependencies to it
 import tbd_config
@@ -52,12 +52,12 @@ def room():
         department_id = request.form.get('department_id', '')
         name = request.form.get('name', '')
         capacity = request.form.get('capacity', '')
-        room_id = Room.post(connection, roomtype_id, department_id, name, capacity)
+        room_id = RoomDAO.addNewRoom(connection, roomtype_id, department_id, name, capacity)
         return {
                    "message": ("Room with id %s was inserted" % (room_id))
                }, 200
     else:
-        response = jsonify(Room.get_all(connection))
+        response = jsonify(RoomDAO.getAllRooms(connection))
         response.status_code = 200
         return response
 
@@ -65,12 +65,12 @@ def room():
 @app.route('/waza/room/<int:room_id>', methods=['DELETE', 'GET', 'PUT'])
 def room_detail(room_id):
     connection = tbd_config.connection
-    room = Room.get_first(connection, room_id)
+    room = RoomDAO.getRoomById(connection, room_id)
     if not room:
         abort(404)
 
     if request.method == 'DELETE':
-        Room.delete(connection, room["id"])
+        RoomDAO.deleteRoom(connection, room["id"])
         return {
                    "message": ("Room with id %s was removed" % (room["id"]))
                }, 200
@@ -80,7 +80,7 @@ def room_detail(room_id):
         department_id = request.form.get('department_id', '')
         name = request.form.get('name', '')
         capacity = request.form.get('capacity', '')
-        # Meeting.put(connection, room["id"], roomtype_id, department_id, name, capacity)
+        RoomDAO.updateRoom(connection, room["id"], roomtype_id, department_id, name, capacity)
         return {
                    "message": ("Room with id %s was updated" % (room["id"]))
                }, 200
