@@ -7,11 +7,8 @@ from controller.statistics_user import BaseStatisticsUser
 from controller.statistics_global import BaseStatisticsGlobal
 from controller.room_schedule import BaseRoomSchedule
 from controller.user_schedule import BaseUserSchedule
-from model.room import Room
+from controller.room import BaseRoom
 
-# Remove this line and file after removing dependencies to it
-import tbd_config
-#
 
 app = Flask(__name__)
 CORS(app)
@@ -46,47 +43,22 @@ def meetings_detail(mid):
 
 @app.route('/waza/room/', methods=['POST', 'GET'])
 def room():
-    connection = tbd_config.connection
     if request.method == "POST":
-        roomtype_id = request.form.get('roomtype_id', '')
-        department_id = request.form.get('department_id', '')
-        name = request.form.get('name', '')
-        capacity = request.form.get('capacity', '')
-        room_id = Room.post(connection, roomtype_id, department_id, name, capacity)
-        return {
-                   "message": ("Room with id %s was inserted" % (room_id))
-               }, 200
+        return BaseRoom().addNewRoom(request.form)
     else:
-        response = jsonify(Room.get_all(connection))
-        response.status_code = 200
-        return response
+        return BaseRoom().getAllRooms()
 
 
 @app.route('/waza/room/<int:room_id>', methods=['DELETE', 'GET', 'PUT'])
 def room_detail(room_id):
-    connection = tbd_config.connection
-    room = Room.get_first(connection, room_id)
-    if not room:
-        abort(404)
-
-    if request.method == 'DELETE':
-        Room.delete(connection, room["id"])
-        return {
-                   "message": ("Room with id %s was removed" % (room["id"]))
-               }, 200
-
-    elif request.method == 'PUT':
-        roomtype_id = request.form.get('roomtype_id', '')
-        department_id = request.form.get('department_id', '')
-        name = request.form.get('name', '')
-        capacity = request.form.get('capacity', '')
-        # Meeting.put(connection, room["id"], roomtype_id, department_id, name, capacity)
-        return {
-                   "message": ("Room with id %s was updated" % (room["id"]))
-               }, 200
-
+    if request.method == "GET":
+        return BaseRoom().getRoomById(room_id)
+    elif request.method == "DELETE":
+        return BaseRoom().deleteRoom(room_id)
+    elif request.method == "PUT":
+        return BaseRoom().updateRoom(room_id, request.form)
     else:
-        return room
+        return jsonify("Method Not Allowed"), 405
 
 
 # ------------------------------------
@@ -134,13 +106,14 @@ def userschedule_detail(usid):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 @app.route('/waza/user/availability/<int:uid>', methods=['GET'])
 def user_availability(uid):
     return BaseUserSchedule().getUserAvailabilityById(uid)
+
 # ------------------------------------
 # app routes for Invitee
 # ------------------------------------
-
 @app.route('/waza/invitee/', methods=['POST', 'GET'])
 def invitees():
     if request.method == "POST":
@@ -169,6 +142,7 @@ def users():
         return BaseUser().addNewUser(request.form)
     else:
         return BaseUser().getAllUsers()
+
 
 @app.route('/waza/user/<int:uid>', methods=['DELETE', 'GET', 'PUT'])
 def users_detail(uid):

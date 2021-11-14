@@ -1,50 +1,55 @@
+from config.dbconfig import pg_config
 import psycopg2
 import psycopg2.extras
 from datetime import datetime
 
 
-class Room:
-    @staticmethod
-    def post(connection, roomtype_id, department_id, name, capacity):
-        with connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+class RoomDAO:
+    def __init__(self):
+        self.conn = psycopg2.connect(host=pg_config['host'],
+                                     port=pg_config['port'],
+                                     dbname=pg_config['dbname'],
+                                     user=pg_config['user'],
+                                     password=pg_config['password'],
+                                     )
+
+    def addNewRoom(self, roomtype_id, department_id, name, capacity):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             time_now = datetime.now()
             qry = "INSERT INTO Room (roomtype_id, department_id, name, capacity, created_at) VALUES (%s, %s, %s, %s, %s) RETURNING id"
             cur.execute(qry, (roomtype_id, department_id, name, capacity, time_now))
-            connection.commit()
+            self.conn.commit()
             record_id = cur.fetchone()['id']
             cur.close()
             return record_id
 
-    @staticmethod
-    def get_first(connection, room_id: int):
-        with connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+    def getRoomById(self, room_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = "SELECT * FROM Room WHERE id = %s;"
-            cur.execute(qry, (str(room_id)))
+            cur.execute(qry, ((room_id),))
             record = cur.fetchone()
             cur.close()
             return record
 
-    @staticmethod
-    def get_all(connection):
-        with connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+    def getAllRooms(self):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = "SELECT * FROM Room;"
             cur.execute(qry)
             records = cur.fetchall()
             cur.close()
             return records
 
-    @staticmethod
-    def delete(connection, room_id: int):
-        with connection.cursor() as cur:
+    def deleteRoom(self, room_id):
+        with self.conn.cursor() as cur:
             qry = "DELETE FROM Room WHERE id = %s;"
-            cur.execute(qry, str(room_id))
-            connection.commit()
+            cur.execute(qry, (room_id,))
+            self.conn.commit()
             cur.close()
 
-    @staticmethod
-    def put(connection,room_id, roomtype_id, department_id, name, capacity):
-        with connection.cursor() as cur:
+
+    def updateRoom(self,room_id, roomtype_id, department_id, name, capacity):
+        with self.conn.cursor() as cur:
             qry = "Update Room SET roomtype_id = (%s), department_id = (%s), name = (%s), capacity = (%s) WHERE id = (%s);"
             cur.execute(qry, ((roomtype_id), (department_id), name, capacity, (room_id)))
-            connection.commit()
+            self.conn.commit()
             cur.close()
