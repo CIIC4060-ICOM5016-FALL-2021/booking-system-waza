@@ -557,18 +557,18 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-11-12 23:00:00",
+									"value": "2021-11-20 23:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-11-12 23:56:37",
+									"value": "2021-11-20 23:56:37",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/waza/roomschedule",
+							"raw": "{{base_url}}/waza/roomschedule?user_id=4",
 							"host": [
 								"{{base_url}}"
 							],
@@ -581,6 +581,10 @@
 									"key": "",
 									"value": "",
 									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "4"
 								}
 							]
 						}
@@ -628,11 +632,17 @@
 									"key": "end_at",
 									"value": "2021-11-13 23:56:37",
 									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/waza/roomschedule/1",
+							"raw": "{{base_url}}/waza/roomschedule/1?user_id=4",
 							"host": [
 								"{{base_url}}"
 							],
@@ -643,9 +653,8 @@
 							],
 							"query": [
 								{
-									"key": "",
-									"value": "",
-									"disabled": true
+									"key": "user_id",
+									"value": "4"
 								}
 							]
 						}
@@ -926,14 +935,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/waza/user/103",
+							"raw": "{{base_url}}/waza/user/104",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"user",
-								"103"
+								"104"
 							],
 							"query": [
 								{

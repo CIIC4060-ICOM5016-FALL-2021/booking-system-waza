@@ -96,7 +96,7 @@ def room_detail(room_id):
 @app.route('/waza/roomschedule/', methods=['POST', 'GET'])
 def roomschedule():
     if request.method == "POST":
-        return BaseRoomSchedule().addNewRoomSchedule(request.form)
+        return BaseRoomSchedule().addNewRoomSchedule(request.form, request.args)
     else:
         return BaseRoomSchedule().getAllRoomSchedule()
 
@@ -107,7 +107,7 @@ def roomschedule_detail(rsid):
     elif request.method == 'DELETE':
         return BaseRoomSchedule().deleteRoomSchedule(rsid)
     elif request.method == 'PUT':
-        return BaseRoomSchedule().updateRoomSchedule(rsid, request.form)
+        return BaseRoomSchedule().updateRoomSchedule(rsid, request.form, request.args)
     else:
         return jsonify("Method Not Allowed"), 405
 

@@ -1,4 +1,5 @@
 from model.room_schedule import RoomScheduleDAO
+from model.user import UserDAO
 from flask import jsonify
 import datetime
 
@@ -19,12 +20,17 @@ class BaseRoomSchedule:
             return jsonify(invitee), 200
 
 
-    def addNewRoomSchedule(self, data):
-        # TODO: validate user role
+    def addNewRoomSchedule(self, data, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
         room_id = data.get('room_id', '')
         start_at = data.get('start_at', '')
         end_at = data.get('end_at', '')
+        user_id = arguments.get('user_id', '')
+        # validate user role
+        user = udao.getUserById(user_id)
+        if user['role_id'] != 1:
+            return jsonify("You don't have enough permissions for this operation."), 401
         # validate date
         try:
             start_at = datetime.datetime.strptime(start_at, "%Y-%m-%d %H:%M:%S")
@@ -42,12 +48,17 @@ class BaseRoomSchedule:
         return self.getRoomScheduleById(rsid)
 
 
-    def updateRoomSchedule(self, rsid, data):
-        # TODO: validate user role
+    def updateRoomSchedule(self, rsid, data, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
         room_id = data.get('room_id', '')
         start_at = data.get('start_at', '')
         end_at = data.get('end_at', '')
+        user_id = arguments.get('user_id', '')
+        # validate user role
+        user = udao.getUserById(user_id)
+        if user['role_id'] != 1:
+            return jsonify("You don't have enough permissions for this operation."), 401
         # validate date
         try:
             start_at = datetime.datetime.strptime(start_at, "%Y-%m-%d %H:%M:%S")
