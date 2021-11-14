@@ -53,3 +53,19 @@ class RoomDAO:
             cur.execute(qry, ((roomtype_id), (department_id), name, capacity, (room_id)))
             self.conn.commit()
             cur.close()
+
+
+    def getRoomCapacityAvailableByMeeting(self, meeting_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """
+                SELECT
+                    max(r.capacity) - count(DISTINCT user_id) AS available_capacity
+                FROM invitee
+                INNER JOIN meeting m on m.id = invitee.meeting_id
+                INNER JOIN room r on r.id = m.room_id
+                WHERE meeting_id = %s
+            """
+            cur.execute(qry, (meeting_id,))
+            record = cur.fetchone()
+            cur.close()
+            return record

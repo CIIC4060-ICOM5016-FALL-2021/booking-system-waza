@@ -1,4 +1,5 @@
 from model.invitee import InviteeDAO
+from model.room import RoomDAO
 from flask import jsonify
 
 
@@ -20,8 +21,13 @@ class BaseInvitee:
 
     def addNewInvitee(self, data):
         dao = InviteeDAO()
+        rdao = RoomDAO()
         user_id = data.get('user_id', '')
         meeting_id = data.get('meeting_id', '')
+        # check if it has space left
+        room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting_id)
+        if room_capacity_available['available_capacity'] <= 0:
+            return jsonify("This room has reached full capacity."), 400
         # check if is available
         unavailable = dao.checkInviteeUnavailability(user_id, meeting_id)
         if unavailable:
