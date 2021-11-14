@@ -1,10 +1,70 @@
 {
 	"info": {
-		"_postman_id": "106a5823-2c05-4a41-aa40-9674a247034e",
+		"_postman_id": "f3978edd-e62f-45ec-b72a-f417754c7135",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Meeting",
 			"item": [
@@ -14,15 +74,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/meeting",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"meeting"
@@ -46,31 +101,26 @@
 								},
 								{
 									"key": "room_id",
-									"value": "1",
+									"value": "2",
 									"type": "text"
 								},
 								{
 									"key": "start_at",
-									"value": "2022-11-06 11:00:00.000000",
+									"value": "2021-12-11 11:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2022-11-05 11:00:00.000000",
+									"value": "2021-12-11 11:45:00",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/meeting",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"meeting"
@@ -92,19 +142,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/12",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/meeting/5",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"meeting",
-								"12"
+								"5"
 							]
 						}
 					},
@@ -130,7 +175,7 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-11-06 11:00:00.000000",
+									"value": "2021-12-06 11:00:00.000000",
 									"type": "text"
 								},
 								{
@@ -141,19 +186,14 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/10",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/meeting/4",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"meeting",
-								"10"
+								"4"
 							],
 							"query": [
 								{
@@ -172,15 +212,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/meeting/1",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/meeting/1",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"meeting",
@@ -201,15 +236,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/invitee",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/invitee",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
 								"invitee"
@@ -222,6 +252,65 @@
 					"name": "Post",
 					"request": {
 						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "meeting_id",
+									"value": "11",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/invitee",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"invitee"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/invitee/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"invitee",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "formdata",
@@ -239,18 +328,101 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/invitee",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/invitee/1",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
-								"invitee"
+								"invitee",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/invitee/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"invitee",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Schedule",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/userschedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"userschedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "start_at",
+									"value": "2021-12-11 11:00:00",
+									"type": "text"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-12-11 13:00:00",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/userschedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"userschedule"
 							],
 							"query": [
 								{
@@ -269,19 +441,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/invitee/7",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/userschedule/1",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
-								"invitee",
-								"7"
+								"userschedule",
+								"1"
 							]
 						}
 					},
@@ -297,29 +464,181 @@
 							"formdata": [
 								{
 									"key": "user_id",
-									"value": "2",
+									"value": "3",
 									"type": "text"
 								},
 								{
-									"key": "meeting_id",
-									"value": "1",
+									"key": "start_at",
+									"value": "2021-11-13 23:00:00",
+									"type": "text"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-13 23:56:37",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/invitee/1",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/userschedule/2",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
-								"invitee",
+								"userschedule",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/userschedule/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"userschedule",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room Schedule",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/roomschedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"roomschedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "start_at",
+									"value": "2021-11-12 23:00:00",
+									"type": "text"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-12 23:56:37",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/roomschedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"roomschedule"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/roomschedule/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"roomschedule",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "start_at",
+									"value": "2021-11-13 23:00:00",
+									"type": "text"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-13 23:56:37",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/roomschedule/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"roomschedule",
 								"1"
 							],
 							"query": [
@@ -339,19 +658,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/waza/invitee/3",
-							"protocol": "http",
+							"raw": "{{base_url}}/waza/roomschedule/1",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"waza",
-								"invitee",
-								"3"
+								"roomschedule",
+								"1"
 							]
 						}
 					},
@@ -360,54 +674,152 @@
 			]
 		},
 		{
-			"name": "Room",
+			"name": "Statistics - User",
 			"item": [
 				{
-					"name": "Get all",
+					"name": "Most Used Room",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/user/most-used-room?user_id=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"user",
+								"most-used-room"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Post",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": null
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": null
-					},
-					"response": []
-				},
-				{
-					"name": "Put",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": null
-					},
-					"response": []
-				},
-				{
-					"name": "Get",
+					"name": "Most Booked User",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/user/most-booked?user_id=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"user",
+								"most-booked"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "2"
+								}
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Statistics - Global",
+			"item": [
+				{
+					"name": "Get Busiest Hours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/busiest-hours",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"busiest-hours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Most Booked Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/most-booked-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"most-booked-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Most Booked Rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/statistics/global/most-booked-rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"statistics",
+								"global",
+								"most-booked-rooms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:5000"
 		}
 	]
 }

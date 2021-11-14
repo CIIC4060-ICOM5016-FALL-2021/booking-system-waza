@@ -3,6 +3,10 @@ from flask import Flask, request, jsonify, abort
 from controller.meeting import BaseMeeting
 from controller.invitee import BaseInvitee
 from controller.user import BaseUser
+from controller.statistics_user import BaseStatisticsUser
+from controller.statistics_global import BaseStatisticsGlobal
+from controller.room_schedule import BaseRoomSchedule
+from controller.user_schedule import BaseUserSchedule
 from model.room import Room
 
 # Remove this line and file after removing dependencies to it
@@ -86,6 +90,50 @@ def room_detail(room_id):
 
 
 # ------------------------------------
+# app routes for RoomSchedule
+# ------------------------------------
+
+@app.route('/waza/roomschedule/', methods=['POST', 'GET'])
+def roomschedule():
+    if request.method == "POST":
+        return BaseRoomSchedule().addNewRoomSchedule(request.form)
+    else:
+        return BaseRoomSchedule().getAllRoomSchedule()
+
+@app.route('/waza/roomschedule/<int:rsid>', methods=['DELETE', 'GET', 'PUT'])
+def roomschedule_detail(rsid):
+    if request.method == 'GET':
+        return BaseRoomSchedule().getRoomScheduleById(rsid)
+    elif request.method == 'DELETE':
+        return BaseRoomSchedule().deleteRoomSchedule(rsid)
+    elif request.method == 'PUT':
+        return BaseRoomSchedule().updateRoomSchedule(rsid, request.form)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# ------------------------------------
+# app routes for RoomSchedule
+# ------------------------------------
+
+@app.route('/waza/userschedule/', methods=['POST', 'GET'])
+def userschedule():
+    if request.method == "POST":
+        return BaseUserSchedule().addNewUserSchedule(request.form)
+    else:
+        return BaseUserSchedule().getAllUserSchedule()
+
+@app.route('/waza/userschedule/<int:usid>', methods=['DELETE', 'GET', 'PUT'])
+def userschedule_detail(usid):
+    if request.method == 'GET':
+        return BaseUserSchedule().getUserScheduleById(usid)
+    elif request.method == 'DELETE':
+        return BaseUserSchedule().deleteUserSchedule(usid)
+    elif request.method == 'PUT':
+        return BaseUserSchedule().updateUserSchedule(usid, request.form)
+    else:
+        return jsonify("Method Not Allowed"), 405
+# ------------------------------------
 # app routes for Invitee
 # ------------------------------------
 
@@ -128,6 +176,33 @@ def users_detail(uid):
         return BaseUser().updateUser(uid, request.form)
     else:
         return jsonify("Method Not Allowed"),405
+
+
+# ------------------------------------
+# app routes for User Statistics
+# ------------------------------------
+@app.route('/waza/statistics/user/most-used-room', methods=['GET'])
+def statistics_user_most_used_room():
+    return BaseStatisticsUser().getMostUsedRoomWithUsers(request.args)
+
+@app.route('/waza/statistics/user/most-booked', methods=['GET'])
+def statistics_user_most_booked():
+    return BaseStatisticsUser().getMostBookedPeerUsers(request.args)
+
+# ------------------------------------
+# app routes for Global Statistics
+# ------------------------------------
+@app.route('/waza/statistics/global/busiest-hours', methods=['GET'])
+def statistics_global_busiest_hours():
+    return BaseStatisticsGlobal().getBusiestHours()
+
+@app.route('/waza/statistics/global/most-booked-users', methods=['GET'])
+def statistics_global_most_booked_users():
+    return BaseStatisticsGlobal().getMostBookedUsers()
+
+@app.route('/waza/statistics/global/most-booked-rooms', methods=['GET'])
+def statistics_global_most_booked_rooms():
+    return BaseStatisticsGlobal().getMostBookedRooms()
 
 
 if __name__ == '__main__':
