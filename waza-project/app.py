@@ -52,12 +52,12 @@ def room():
         department_id = request.form.get('department_id', '')
         name = request.form.get('name', '')
         capacity = request.form.get('capacity', '')
-        room_id = RoomDAO.post(connection, roomtype_id, department_id, name, capacity)
+        room_id = RoomDAO.addNewRoom(connection, roomtype_id, department_id, name, capacity)
         return {
                    "message": ("Room with id %s was inserted" % (room_id))
                }, 200
     else:
-        response = jsonify(RoomDAO.get_all(connection))
+        response = jsonify(RoomDAO.getAllRooms(connection))
         response.status_code = 200
         return response
 
@@ -65,12 +65,12 @@ def room():
 @app.route('/waza/room/<int:room_id>', methods=['DELETE', 'GET', 'PUT'])
 def room_detail(room_id):
     connection = tbd_config.connection
-    room = RoomDAO.get_first(connection, room_id)
+    room = RoomDAO.getRoomById(connection, room_id)
     if not room:
         abort(404)
 
     if request.method == 'DELETE':
-        RoomDAO.delete(connection, room["id"])
+        RoomDAO.deleteRoom(connection, room["id"])
         return {
                    "message": ("Room with id %s was removed" % (room["id"]))
                }, 200
@@ -80,7 +80,7 @@ def room_detail(room_id):
         department_id = request.form.get('department_id', '')
         name = request.form.get('name', '')
         capacity = request.form.get('capacity', '')
-        RoomDAO.put(connection, room["id"], roomtype_id, department_id, name, capacity)
+        RoomDAO.updateRoom(connection, room["id"], roomtype_id, department_id, name, capacity)
         return {
                    "message": ("Room with id %s was updated" % (room["id"]))
                }, 200

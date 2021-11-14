@@ -57,7 +57,7 @@ class RoomDAO:
             cur.close()
 
     @staticmethod
-    def UpdateRoom(connection,room_id, roomtype_id, department_id, name, capacity):
+    def updateRoom(connection,room_id, roomtype_id, department_id, name, capacity):
         with connection.cursor() as cur:
             qry = "Update Room SET roomtype_id = (%s), department_id = (%s), name = (%s), capacity = (%s) WHERE id = (%s);"
             cur.execute(qry, ((roomtype_id), (department_id), name, capacity, (room_id)))
