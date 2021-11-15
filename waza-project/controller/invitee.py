@@ -81,7 +81,9 @@ class BaseInvitee:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
 
         meeting = mdao.addNewMeeting(created_by, room_id, start_at, end_at)
-        room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting)
+        #print(meeting)
+        room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting['id'])
+        #print(room_capacity_available['available_capacity'])
 
         if room_capacity_available['available_capacity'] <= 0 or room_capacity_available['available_capacity'] < len(users):
             return jsonify("This room has reached full capacity or will overflow."), 400
