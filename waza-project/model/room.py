@@ -84,3 +84,27 @@ class RoomDAO:
             cur.close()
             return record
 
+    def getAvailableRoom(self, start_at, end_at,):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """WITH used_rooms AS (
+                            SELECT
+                                room_id
+                            FROM roomschedule
+                            WHERE start_at >= %s AND end_at <= %s
+                            UNION
+                            SELECT
+                                room_id
+                            FROM meeting
+                            WHERE start_at >= %s AND end_at <= %s
+                        )
+                        
+                        SELECT
+                        *
+                        FROM room
+                        WHERE id not in (select room_id from used_rooms)
+                             """
+            cur.execute(qry, (start_at,end_at,start_at,end_at))
+            record = cur.fetchall()
+            cur.close()
+            return record
+
