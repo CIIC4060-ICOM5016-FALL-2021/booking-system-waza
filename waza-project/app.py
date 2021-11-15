@@ -138,6 +138,7 @@ def invitees_detail(iid):
 @app.route('/waza/invitee/', methods=['POST'])
 def meeting_2plus():
     return BaseInvitee().addMoreInvitee(request.form, request.arguments)
+
 # ------------------------------------
 # app routes for Users
 # ------------------------------------
