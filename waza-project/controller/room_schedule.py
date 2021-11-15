@@ -5,14 +5,29 @@ import datetime
 
 
 class BaseRoomSchedule:
-    def getAllRoomSchedule(self):
+    def getAllRoomSchedule(self, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+
+        if user['role_id'] not in range(1, 4):
+            return jsonify("You do not have enough permissions for this operation."), 403
+
         invitees = dao.getAllRoomSchedule()
         return jsonify(invitees), 200
 
 
-    def getRoomScheduleById(self, rsid):
+    def getRoomScheduleById(self, rsid, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+
+        if user['role_id'] not in range(1, 4):
+            return jsonify("You do not have enough permissions for this operation."), 403
+
+
         invitee = dao.getRoomScheduleById(rsid)
         if not invitee:
             return jsonify("Not Found"), 404
@@ -45,7 +60,7 @@ class BaseRoomSchedule:
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
         rsid = dao.addNewRoomSchedule(room_id, start_at, end_at)
-        return self.getRoomScheduleById(rsid)
+        return self.getRoomScheduleById(rsid, arguments)
 
 
     def updateRoomSchedule(self, rsid, data, arguments):
@@ -73,18 +88,32 @@ class BaseRoomSchedule:
         if unavailable:
             return jsonify("This time slot is already reserved."), 400
         result = dao.updateRoomSchedule(rsid, room_id, start_at, end_at)
-        return self.getRoomScheduleById(rsid)
+        return self.getRoomScheduleById(rsid, arguments)
 
 
-    def deleteRoomSchedule(self, rsid):
+    def deleteRoomSchedule(self, rsid, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+
+        if user['role_id'] not in range(1, 4):
+            return jsonify("You do not have enough permissions for this operation."), 403
+
         result = dao.deleteRoomSchedule(rsid)
         if result:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
-    def getRoomAvailabilityById(self, rid):
+    def getRoomAvailabilityById(self, rid, arguments):
         dao = RoomScheduleDAO()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+
+        if user['role_id'] not in range(1, 4):
+            return jsonify("You do not have enough permissions for this operation."), 403
+
         result = dao.allDayAvailability(rid)
         if result:
             return jsonify(result), 200

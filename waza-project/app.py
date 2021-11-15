@@ -74,14 +74,14 @@ def roomschedule():
     if request.method == "POST":
         return BaseRoomSchedule().addNewRoomSchedule(request.form, request.args)
     else:
-        return BaseRoomSchedule().getAllRoomSchedule()
+        return BaseRoomSchedule().getAllRoomSchedule(request.args)
 
 @app.route('/waza/roomschedule/<int:rsid>', methods=['DELETE', 'GET', 'PUT'])
 def roomschedule_detail(rsid):
     if request.method == 'GET':
-        return BaseRoomSchedule().getRoomScheduleById(rsid)
+        return BaseRoomSchedule().getRoomScheduleById(rsid, request.args)
     elif request.method == 'DELETE':
-        return BaseRoomSchedule().deleteRoomSchedule(rsid)
+        return BaseRoomSchedule().deleteRoomSchedule(rsid, request.args)
     elif request.method == 'PUT':
         return BaseRoomSchedule().updateRoomSchedule(rsid, request.form, request.args)
     else:
@@ -89,7 +89,7 @@ def roomschedule_detail(rsid):
 
 @app.route('/waza/room/availability/<int:rid>', methods=['GET'])
 def room_availability(rid):
-    return BaseRoomSchedule().getRoomAvailabilityById(rid)
+    return BaseRoomSchedule().getRoomAvailabilityById(rid, request.args)
 
 
 # ------------------------------------

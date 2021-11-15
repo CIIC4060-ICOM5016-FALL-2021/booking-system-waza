@@ -20,7 +20,6 @@ class BaseUserSchedule:
 
 
     def addNewUserSchedule(self, data):
-        # TODO: validate user role
         dao = UserScheduleDAO()
         user_id = data.get('user_id', '')
         start_at = data.get('start_at', '')
@@ -43,7 +42,6 @@ class BaseUserSchedule:
 
 
     def updateUserSchedule(self, usid, data):
-        # TODO: validate user role
         dao = UserScheduleDAO()
         user_id = data.get('user_id', '')
         start_at = data.get('start_at', '')
