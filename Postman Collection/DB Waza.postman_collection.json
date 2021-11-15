@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "818339bb-4b45-4d00-b6fb-34e89116d674",
+		"_postman_id": "fb5a14eb-e625-48b2-8e10-f9e50f85a6f0",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/waza/room",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room"
+							]
 						}
 					},
 					"response": []
@@ -24,8 +31,40 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "roomtype_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "department_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Amadeus",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "50",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/waza/room",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room"
+							]
 						}
 					},
 					"response": []
@@ -36,7 +75,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/waza/room/18",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room",
+								"18"
+							]
 						}
 					},
 					"response": []
@@ -46,8 +93,41 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "roomtype_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "department_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Amadeus",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "30",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/waza/room/22",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room",
+								"22"
+							]
 						}
 					},
 					"response": []
@@ -58,7 +138,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/waza/room/22",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room",
+								"22"
+							]
 						}
 					},
 					"response": []
@@ -74,13 +162,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting",
+							"raw": "{{base_url}}/waza/meeting/?user_id=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
-								"meeting"
+								"meeting",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -212,14 +307,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/3",
+							"raw": "{{base_url}}/waza/meeting/1?user_id=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"3"
+								"1"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -258,12 +359,12 @@
 							"formdata": [
 								{
 									"key": "user_id",
-									"value": "2",
+									"value": "25",
 									"type": "text"
 								},
 								{
 									"key": "meeting_id",
-									"value": "11",
+									"value": "40",
 									"type": "text"
 								}
 							]
@@ -354,14 +455,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/invitee/9",
+							"raw": "{{base_url}}/waza/invitee/21",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"invitee",
-								"9"
+								"21"
 							]
 						}
 					},
@@ -518,15 +619,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "All day",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": null
-					},
-					"response": []
 				}
 			]
 		},
@@ -539,13 +631,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/roomschedule",
+							"raw": "{{base_url}}/waza/roomschedule?user_id=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"roomschedule"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -566,12 +664,12 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-11-20 23:00:00",
+									"value": "2021-01-21 23:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-11-20 23:56:37",
+									"value": "2021-01-21 23:56:37",
 									"type": "text"
 								}
 							]
@@ -587,11 +685,6 @@
 							],
 							"query": [
 								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								},
-								{
 									"key": "user_id",
 									"value": "4"
 								}
@@ -606,7 +699,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/roomschedule/3",
+							"raw": "{{base_url}}/waza/roomschedule/3?user_id=19",
 							"host": [
 								"{{base_url}}"
 							],
@@ -614,6 +707,12 @@
 								"waza",
 								"roomschedule",
 								"3"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "19"
+								}
 							]
 						}
 					},
@@ -676,14 +775,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/roomschedule/1",
+							"raw": "{{base_url}}/waza/roomschedule/19?user_id=19",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"roomschedule",
-								"1"
+								"19"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "19"
+								}
 							]
 						}
 					},
@@ -968,16 +1073,67 @@
 					"name": "Get",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "3",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/waza/user/103",
+							"raw": "{{base_url}}/waza/user/10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"user",
-								"103"
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users time available",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/user/time_available?users=[1,2,3,4,5]",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user",
+								"time_available"
+							],
+							"query": [
+								{
+									"key": "users",
+									"value": "[1,2,3,4,5]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user all day schedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/user/availability/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user",
+								"availability",
+								"1"
 							]
 						}
 					},
