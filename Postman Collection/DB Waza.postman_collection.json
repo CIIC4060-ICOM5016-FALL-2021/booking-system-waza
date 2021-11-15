@@ -307,20 +307,69 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/1?user_id=10",
+							"raw": "{{base_url}}/waza/meeting/1119?user_id=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"1"
+								"1119"
 							],
 							"query": [
 								{
 									"key": "user_id",
 									"value": "10"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post meeting with invitees",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "created_by",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "room_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "start_at",
+									"value": "2022-01-11 11:00:00",
+									"type": "text"
+								},
+								{
+									"key": "end_at",
+									"value": "2022-01-11 11:45:00",
+									"type": "text"
+								},
+								{
+									"key": "users",
+									"value": "[1,2,3]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/meeting_with_invitees/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"meeting_with_invitees",
+								""
 							]
 						}
 					},

@@ -59,11 +59,11 @@ class RoomDAO:
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             qry = """
                 SELECT
-                    max(r.capacity) - count(DISTINCT user_id) AS available_capacity
-                FROM invitee
-                INNER JOIN meeting m on m.id = invitee.meeting_id
+                    max(r.capacity) - count(DISTINCT i.user_id) AS available_capacity
+                FROM meeting m
                 INNER JOIN room r on r.id = m.room_id
-                WHERE meeting_id = %s
+                LEFT JOIN invitee i on m.id = i.meeting_id
+                WHERE m.id = %s
             """
             cur.execute(qry, (meeting_id,))
             record = cur.fetchone()

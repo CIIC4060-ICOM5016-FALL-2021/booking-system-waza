@@ -1,7 +1,6 @@
 from model.invitee import InviteeDAO
 from model.room import RoomDAO
 from model.meeting import MeetingDAO
-from model.user import UserDAO
 
 from flask import jsonify, json
 import datetime
@@ -58,17 +57,15 @@ class BaseInvitee:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
-    def addMoreInvitee(self, data, arguments):
+    def addMeetingWithInvitees(self, data):
         dao = InviteeDAO()
         mdao = MeetingDAO()
         rdao = RoomDAO()
-        udao = UserDAO()
-        #users = dao.getUserIdFromAllInvitees().split("")
         created_by = data.get('created_by', '')
         room_id = data.get('room_id', '')
         start_at = data.get('start_at', '')
-        end_at  = data.get('end_at', '')
-        users = arguments.get('users', '')
+        end_at = data.get('end_at', '')
+        users = data.get('users', '')
         user_list = json.loads(users)
 
         try:
@@ -81,22 +78,20 @@ class BaseInvitee:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
 
         meeting = mdao.addNewMeeting(created_by, room_id, start_at, end_at)
-        #print(meeting)
-        room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting['id'])
-        #print(room_capacity_available['available_capacity'])
+        room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting)
 
         if room_capacity_available['available_capacity'] <= 0 or room_capacity_available['available_capacity'] < len(users):
             return jsonify("This room has reached full capacity or will overflow."), 400
 
+        unavailable_users = ''
         for user in user_list:
-            try:
-                unavailable = dao.checkInviteeUnavailability(user, meeting)
-                if unavailable:
-                    raise UnavailableError
-                dao.addNewInvitee(user, meeting)
-            except UnavailableError:
+            unavailable = dao.checkInviteeUnavailability(user, meeting)
+            if unavailable:
+                unavailable_users += str(user) + ', '
                 continue
-                #return jsonify("This user " + udao.getUserById(user) + " is unavailable"), 400
+            dao.addNewInvitee(user, meeting)
 
-        return jsonify("OK"), 200
+        if unavailable_users:
+            return jsonify("The following user(s) could not be added to the meeting " + unavailable_users), 202
 
+        return jsonify(mdao.getMeetingById(meeting)), 200
