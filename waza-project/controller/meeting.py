@@ -46,14 +46,7 @@ class BaseMeeting:
         if user['role_id'] not in range(1, 4):
             return jsonify("You do not have enough permissions for this operation."), 403
         
-        try:
-            # validate date
-            start_at = datetime.datetime.strptime(start_at, "%Y-%m-%d %H:%M:%S")
-            end_at = datetime.datetime.strptime(end_at, "%Y-%m-%d %H:%M:%S")
-        except ValueError as e:
-            return jsonify("Invalid datetime. Please provide a valid datetime for start_at and end_at in the form: YYYY-MM-DD HH:MM:SS."), 400
-        if start_at > end_at:
-            return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
+
         mid = dao.addNewMeeting(created_by, room_id, start_at, end_at)
         return self.getMeetingById(mid)
 

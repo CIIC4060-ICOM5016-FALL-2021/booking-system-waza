@@ -37,6 +37,8 @@ def meetings_detail(mid):
         return jsonify("Method Not Allowed"), 405
 
 
+
+
 # ------------------------------------
 # app routes for Room
 # ------------------------------------
@@ -148,6 +150,10 @@ def invitees_detail(iid):
         return BaseInvitee().updateInvitee(iid, request.form)
     else:
         return jsonify("Method Not Allowed"), 405
+
+@app.route('/waza/invitee/multi', methods=['POST'])
+def meeting_2plus():
+    return BaseInvitee().addMoreInvitee(request.form, request.args)
 
 # ------------------------------------
 # app routes for Users
