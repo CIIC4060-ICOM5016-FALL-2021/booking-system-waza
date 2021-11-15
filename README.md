@@ -23,3 +23,5 @@ Gabriel Rosa Ríos
 
 ## REST API
 The REST API source code is located in **waza-project** directory
+##Heroku URL
+https://guarded-hamlet-30872.herokuapp.com/
