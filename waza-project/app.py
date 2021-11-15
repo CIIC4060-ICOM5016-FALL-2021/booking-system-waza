@@ -114,6 +114,10 @@ def userschedule_detail(usid):
 @app.route('/waza/user/availability/<int:uid>', methods=['GET'])
 def user_availability(uid):
     return BaseUserSchedule().getUserAvailabilityById(uid)
+    
+@app.route('/waza/user/time_available/', methods=['GET'])
+def users_availability_slot():
+    return BaseUser().usersAvailabilitySlot(request.args)
 
 # ------------------------------------
 # app routes for Invitee

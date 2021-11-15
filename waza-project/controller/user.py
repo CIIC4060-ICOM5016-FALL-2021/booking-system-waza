@@ -1,3 +1,4 @@
+import json
 from model.user import UserDAO
 from flask import jsonify
 
@@ -47,4 +48,8 @@ class BaseUser:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
-
+    def usersAvailabilitySlot(self, arguments):
+        dao = UserDAO()
+        users = arguments.get('users', '')
+        users_array = json.loads(users) # try converting input to array
+        return jsonify(dao.usersAvailabilitySlot(users_array)), 200

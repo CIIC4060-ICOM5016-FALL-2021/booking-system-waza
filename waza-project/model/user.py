@@ -62,3 +62,45 @@ class UserDAO:
             self.conn.commit()
             cur.close()
             return True
+
+    def usersAvailabilitySlot(self, users):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            first_user = users[0]
+            users = tuple(users)
+            qry = """
+            WITH all_availability AS (
+                SELECT
+                start_at
+                ,end_at
+                ,user_id
+                FROM invitee i
+                inner join meeting m on m.id = i.meeting_id
+                WHERE i.user_id IN %s
+                UNION
+                SELECT
+                start_at
+                ,end_at
+                ,user_id
+                FROM userschedule us
+                WHERE us.user_id IN %s
+                UNION
+                SELECT current_date + INTERVAL '1 month', current_date + INTERVAL '1 month 1 min', %s -- force to make a gap if there are no meets within a month
+            )
+            , find_date_gaps AS (
+                SELECT
+                    a.start_at,
+                    lag(a.end_at) OVER (PARTITION BY a.user_id ORDER BY a.start_at) as previous_end_at
+                FROM all_availability a
+            )
+            
+            SELECT
+                g.previous_end_at as start_at,
+                g.start_at as end_at
+            FROM find_date_gaps g
+            WHERE g.start_at > previous_end_at
+            ORDER BY start_at
+            """
+            cur.execute(qry, (users, users, first_user,))
+            record = cur.fetchall()
+            cur.close()
+            return record
