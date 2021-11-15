@@ -76,6 +76,5 @@ class BaseUserSchedule:
         dao = UserScheduleDAO()
         result = dao.allDayAvailability(uid)
         if result:
-            return result
+            return jsonify(result),200
         return jsonify("NOT FOUND"), 404
-
