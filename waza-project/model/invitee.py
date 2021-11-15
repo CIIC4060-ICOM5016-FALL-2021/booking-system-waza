@@ -88,12 +88,3 @@ class InviteeDAO:
             records = cur.fetchall()
             cur.close()
             return records
-
-#Gets all the unique invitees by user ID sorted.
-    # def getUserIdFromAllInvitees(self):
-    #     with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-    #         qry = "SELECT DISTINCT user_id FROM Invitee ORDER BY user_id;"
-    #         cur.execute(qry)
-    #         records = cur.fetchall()
-    #         cur.close()
-    #         return records

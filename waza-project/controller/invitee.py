@@ -1,12 +1,8 @@
 from model.invitee import InviteeDAO
 from model.room import RoomDAO
 from model.meeting import MeetingDAO
-
 from flask import jsonify, json
 import datetime
-
-class UnavailableError(Exception):
-    pass
 
 
 class BaseInvitee:

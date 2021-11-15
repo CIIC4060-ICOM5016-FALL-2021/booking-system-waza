@@ -112,5 +112,3 @@ class RoomScheduleDAO:
             records = cur.fetchall()
             cur.close()
             return records
-#               SELECT rs.id, rs.room_id, rs.start_at, rs.end_at FROM roomschedule rs
-#              WHERE rs.room_id = %s AND rs.start_at BETWEEN '2021-12-01' and ('2021-12-02 17:00:00');
