@@ -64,6 +64,10 @@ def room_detail(room_id):
 def room_user():
     return BaseRoom().getRoomtUser(request.args)
 
+@app.route('/waza/room_available/', methods=['GET'])
+def room_available():
+    return BaseRoom().getAvailableRoom(request.args)
+
 
 # ------------------------------------
 # app routes for RoomSchedule

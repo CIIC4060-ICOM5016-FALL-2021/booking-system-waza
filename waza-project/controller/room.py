@@ -54,4 +54,14 @@ class BaseRoom:
         else:
             return jsonify(room_appointment), 200
 
+    def getAvailableRoom(self, arguments):
+        dao = RoomDAO()
+        start_at = arguments.get('start_at', '')
+        end_at = arguments.get('end_at', '')
+        room_availableRoom = dao.getAvailableRoom(start_at,end_at)
+        if not room_availableRoom:
+            return jsonify("Not Found"), 404
+        else:
+            return jsonify(room_availableRoom), 200
+
 
