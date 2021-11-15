@@ -69,3 +69,18 @@ class RoomDAO:
             record = cur.fetchone()
             cur.close()
             return record
+
+    def getRoomtUser(self, start_at, end_at):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """SELECT u.*, m.room_id
+                        FROM room r
+                        INNER JOIN meeting m on r.id = m.room_id
+                        INNER JOIN "User" U on U.id = m.created_by
+                            WHERE m.start_at >= %s
+                            AND m.end_at <= %s """
+
+            cur.execute(qry, (start_at,end_at,))
+            record = cur.fetchall()
+            cur.close()
+            return record
+
