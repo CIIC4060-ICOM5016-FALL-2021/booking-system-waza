@@ -60,7 +60,9 @@ def room_detail(room_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
-
+@app.route('/waza/room_user/', methods=['GET'])
+def room_user():
+    return BaseRoom().getRoomtUser(request.args)
 
 
 # ------------------------------------
@@ -88,6 +90,8 @@ def roomschedule_detail(rsid):
 @app.route('/waza/room/availability/<int:rid>', methods=['GET'])
 def room_availability(rid):
     return BaseRoomSchedule().getRoomAvailabilityById(rid)
+
+
 # ------------------------------------
 # app routes for UserSchedule
 # ------------------------------------

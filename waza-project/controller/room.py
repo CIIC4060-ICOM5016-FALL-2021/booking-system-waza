@@ -44,4 +44,14 @@ class BaseRoom:
             return jsonify("DELETED"), 200
         return jsonify("NOT FOUND"), 404
 
+    def getRoomtUser(self, arguments):
+        dao = RoomDAO()
+        start_at = arguments.get('start_at', '')
+        end_at = arguments.get('end_at', '')
+        room_appointment = dao.getRoomtUser(start_at,end_at)
+        if not room_appointment:
+            return jsonify("Not Found"), 404
+        else:
+            return jsonify(room_appointment), 200
+
 
