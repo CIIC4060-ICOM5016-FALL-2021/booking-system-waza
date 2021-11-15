@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fb5a14eb-e625-48b2-8e10-f9e50f85a6f0",
+		"_postman_id": "8fa84943-75a8-41dc-9c94-b3649355ccb7",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -146,6 +146,90 @@
 								"waza",
 								"room",
 								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Room all day schedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/room/availability/3?user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room",
+								"availability",
+								"3"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Available Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/room_available/?start_at=2021-11-08 14:30:00&end_at=2021-11-08 20:00:00",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room_available",
+								""
+							],
+							"query": [
+								{
+									"key": "start_at",
+									"value": "2021-11-08 14:30:00"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-08 20:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get roomUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/room_user/?start_at=2021-11-08 14:30:00&end_at=2021-11-08 20:00:00",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"room_user",
+								""
+							],
+							"query": [
+								{
+									"key": "start_at",
+									"value": "2021-11-08 14:30:00"
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-08 20:00:00"
+								}
 							]
 						}
 					},
@@ -1214,7 +1298,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://127.0.0.1:5000"
+			"value": "https://guarded-hamlet-30872.herokuapp.com"
 		}
 	]
 }
