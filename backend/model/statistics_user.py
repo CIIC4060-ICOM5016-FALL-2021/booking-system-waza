@@ -5,6 +5,7 @@ import psycopg2.extras
 
 class StatisticsUserDAO:
     def __init__(self):
+
         self.conn = psycopg2.connect(host=pg_config['host'],
                                      port=pg_config['port'],
                                      dbname=pg_config['dbname'],

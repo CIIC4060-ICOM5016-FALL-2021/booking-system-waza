@@ -17,6 +17,14 @@ class BaseUser:
         else:
             return jsonify(user), 200
 
+    def getUserLoginValidation(self, un,pw):
+        dao = UserDAO()
+        user = dao.getUserLoginValidation(un,pw)
+        if not user:
+            return jsonify("Not Found"), 404
+        else:
+            return jsonify(user), 200
+
     def addNewUser(self, data):
         dao = UserDAO()
         
