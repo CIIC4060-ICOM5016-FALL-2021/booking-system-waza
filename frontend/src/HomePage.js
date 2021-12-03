@@ -39,13 +39,6 @@ function HomePage() {
     }
 //-----------------------------------------------------------------------------------------------
 
-
-    // Signup
-    function signUp()
-    {
-
-
-    }
     //Register new user
     function register()
     {
@@ -61,6 +54,7 @@ function HomePage() {
             .then(data => console.log(data));
 
     }
+//-----------------------------------------------------------------------------------------------
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
             <Modal
@@ -140,7 +134,6 @@ function HomePage() {
                                 <Button content='Register' primary onClick={register}/>
                             </Form>
                         </Grid.Column>
-                    {/*    <Button content='Sign up' icon='signup' size='big' onClick={handleChange}/>*/}
                     </Grid.Column>
                 </Grid>
 
