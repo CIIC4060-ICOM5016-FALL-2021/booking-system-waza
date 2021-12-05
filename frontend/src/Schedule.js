@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -23,6 +23,23 @@ function Schedule(){
     }]);
     const [open, setOpen] = useState(false);
     const localizer = momentLocalizer(moment)
+    
+
+    
+    useEffect(() => {
+	fetch("https://guarded-hamlet-30872.herokuapp.com/waza/userschedule/4")
+	    .then(res => res.json())
+	    .then(
+		(result) => {
+		    setDates(result)
+		    setOpen(result)
+		    console.log(result)
+		},
+	    )
+
+    }, [])
+
+
 
     return <Container style={{ height: 800 }}><Calendar
         localizer={localizer}
