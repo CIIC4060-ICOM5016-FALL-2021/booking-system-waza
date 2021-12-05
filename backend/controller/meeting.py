@@ -11,11 +11,15 @@ class BaseMeeting:
         udao = UserDAO()
         user_id = arguments.get('user_id', '')
         user = udao.getUserById(user_id)
+        get_all = arguments.get('all', '')  # used to get all that the user can see, or only his. Default will be his.
 
-        if user['role_id'] not in range(1, 4):
-            return jsonify("You do not have enough permissions for this operation."), 403
-        
-        meetings = dao.getAllMeetings()
+        if get_all == 'true':
+            if user['role_id'] not in range(1, 4):
+                return jsonify("You do not have enough permissions for this operation."), 403
+            else:
+                meetings = dao.getAllMeetings()
+        else:
+            meetings = dao.getAllUserMeetingsWithRoomName(user_id)
         return jsonify(meetings), 200
 
     def getMeetingById(self, mid, arguments):

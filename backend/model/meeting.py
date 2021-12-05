@@ -55,3 +55,11 @@ class MeetingDAO:
             self.conn.commit()
             cur.close()
             return True
+
+    def getAllUserMeetingsWithRoomName(self, user_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = "SELECT m.*, r.name as room_name FROM invitee i LEFT JOIN meeting m on m.id = i.meeting_id INNER JOIN room r on r.id = m.room_id WHERE i.user_id = %s;"
+            cur.execute(qry, (user_id,))
+            record = cur.fetchall()
+            cur.close()
+            return record
