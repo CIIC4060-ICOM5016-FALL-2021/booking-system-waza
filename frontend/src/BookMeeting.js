@@ -83,7 +83,7 @@ function BookMeeting() {
             let start_at = moment(dateRangeValueUnavailability[0]).format('YYYY-MM-DD HH:mm:ss');
             let end_at = moment(dateRangeValueUnavailability[1]).format('YYYY-MM-DD HH:mm:ss');
             let form_data = new FormData();
-            
+
             form_data.append('user_id', 3);
             form_data.append('start_at', start_at);
             form_data.append('end_at', end_at);
@@ -115,6 +115,20 @@ function BookMeeting() {
             const response = await fetch(`http://127.0.0.1:5000/waza/meeting/${meetingDetails['meeting_id']}?user_id=3`, requestOptions);
             const data = await response.json();
             console.log(data)
+            setOpenMeetingDetail(false);
+            setDeleteInProgress(false)
+            getMeetings();
+        })();
+    }
+
+    const deleteInvitee = (invitee_id) => {
+        (async () => {
+            setDeleteInProgress(true)
+            const requestOptions = {
+                method: 'DELETE',
+            };
+            const response = await fetch(`http://127.0.0.1:5000/waza/invitee/${invitee_id}?user_id=3`, requestOptions);
+            console.log(await response.json())
             setOpenMeetingDetail(false);
             setDeleteInProgress(false)
             getMeetings();
@@ -530,6 +544,7 @@ function BookMeeting() {
                                                               }) => (
                                             <Container>
                                                 <Feed.Event>
+
                                                     <Feed.Content>
                                                         <Feed.Summary>
                                                             <b>{invitee_user_first_name} {invitee_user_last_name}</b>
@@ -541,6 +556,9 @@ function BookMeeting() {
                                                             {invitee_user_phone}
                                                         </Feed.Extra>
                                                     </Feed.Content>
+                                                    <Feed.Label>
+                                                        <Button negative onClick={() => deleteInvitee(invitee_id)} circular icon='delete' />
+                                                    </Feed.Label>
                                                 </Feed.Event>
                                                 <Divider/>
                                             </Container>
