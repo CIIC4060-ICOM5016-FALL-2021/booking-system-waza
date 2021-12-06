@@ -14,11 +14,11 @@ class UserDAO:
                                      password=pg_config['password'],
                                      )
 
-    def addNewUser(self, role_id, first_name, last_name, email, phone):
+    def addNewUser(self, role_id, first_name, last_name, email, phone, pw):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             time_now = datetime.now()
-            qry = "INSERT INTO \"User\" (role_id, first_name, last_name, email, phone, created_at) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id"
-            cur.execute(qry, (role_id, first_name, last_name, email, phone, time_now))
+            qry = "INSERT INTO \"User\" (role_id, first_name, last_name, email, phone, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id"
+            cur.execute(qry, (role_id, first_name, last_name, email, phone, time_now, pw))
             self.conn.commit()
             record_id = cur.fetchone()['id']
             cur.close()

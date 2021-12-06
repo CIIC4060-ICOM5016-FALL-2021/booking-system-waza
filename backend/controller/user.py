@@ -33,8 +33,9 @@ class BaseUser:
         last_name = data.get('last_name', '')
         email = data.get('email', '')
         phone = data.get('phone', '')
+        password = data.get('password', '')
         
-        uid = dao.addNewUser(role_id, first_name, last_name, email, phone)
+        uid = dao.addNewUser(role_id, first_name, last_name, email, phone, password)
         return self.getUserById(uid)
 
     def updateUser(self, uid, data):
