@@ -11,29 +11,36 @@ function HomePage() {
     let signUp = false;
     }
 
+    function addActiveUser(email,id)
+    {
+        window.alert(localStorage.getItem(email))
+        // Add Data
+        localStorage.setItem(email, id);
+
+// Get data
+//        window.alert(localStorage.getItem(email))
+// // Remove data
+//         localStorage.removeItem(email);
+//         window.alert(localStorage.getItem(email))
+    }
+
     //LOGIN
 //---------------------------------------------------------------------------------------
-    function UserAuthantication()
+     function UserAuthantication()
     {
-        let un;
-        let pw;
+        let un = document.getElementById("un").value;
+        let pw = document.getElementById("pw").value;
 
-        un = document.getElementById("un").value
-        pw = document.getElementById("pw").value
-
-        fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user/')
-            .then(response => response.json())
-            .then(data => console.log(data));
-// Add Data
-        var someData = 'prueba.';
-        localStorage.setItem('myDataKey', someData);
-// Get data
-        window.alert(localStorage.getItem(someData))
-// Remove data
-        localStorage.removeItem('myDatakey');
-        window.alert(localStorage.getItem('myDataKey'))
-
-
+        fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user/'+un+'/'+pw)
+            .then(response =>
+            response.json().then(data => ({
+                    data: data,
+                    status: response.status
+                })
+            ).then(res => {
+                let userID = res.data['id']
+                addActiveUser(un,userID)
+            }));
         return 0;
 
     }
@@ -47,11 +54,27 @@ function HomePage() {
         let lastName = document.getElementById("ln").value
         let email = document.getElementById("email").value
         let phone = document.getElementById("phone").value
+        let password = document.getElementById("unpw").value
 
-        fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user?role_id='+role_id+
-        '&first_name='+firstName+'&last_name='+lastName+'&email='+email+'&phone='+phone, {method: 'POST'})
-            .then(response => response.json())
-            .then(data => console.log(data));
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ role_id: role_id,first_name: firstName, last_name: lastName, email:email,phone:phone, passwor: password })
+        };
+
+        fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user/', requestOptions)
+            .then(response =>
+                response.json().then(data => ({
+                        data: data,
+                        status: response.status
+                    })
+                ).then(res => {
+                    let userID = res.data['id']
+                    addActiveUser(email,userID)
+                }))
+            .catch(error => {
+                window.alert(error)
+            });
 
     }
 //-----------------------------------------------------------------------------------------------
@@ -104,6 +127,12 @@ function HomePage() {
                                     label='Email'
                                     placeholder='user@example.com'
                                     id='email'
+                                /> <Form.Input
+                                    icon='lock'
+                                    iconPosition='left'
+                                    label='Password'
+                                    placeholder='Password'
+                                    id='unpw'
                                 />
                                 <Form.Input
                                     icon='user'
@@ -136,7 +165,6 @@ function HomePage() {
                         </Grid.Column>
                     </Grid.Column>
                 </Grid>
-
                 <Divider vertical>Or</Divider>
             </Segment>
         </Segment>
