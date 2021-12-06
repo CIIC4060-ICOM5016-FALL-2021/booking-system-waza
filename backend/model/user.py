@@ -34,8 +34,8 @@ class UserDAO:
 
     def getUserLoginValidation(self, user_email, user_pw):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            qry = "SELECT * FROM \"User\" WHERE email = %s;"
-            cur.execute(qry, (user_email,))
+            qry = "SELECT id FROM \"User\" WHERE email = %s AND password = %s;"
+            cur.execute(qry, (user_email,user_pw,))
             record = cur.fetchone()
             cur.close()
             return record
