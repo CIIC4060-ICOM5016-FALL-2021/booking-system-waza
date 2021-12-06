@@ -41,6 +41,10 @@ def meetings_detail(mid):
 def meeting_with_invitees():
     return BaseInvitee().addMeetingWithInvitees(request.form)
 
+@app.route('/waza/meeting_with_invitees/<int:mid>', methods=['GET'])
+def meeting_with_invitees_detail(mid):
+    return BaseInvitee().getMeetingWithInviteesDetail(mid, request.args)
+
 # ------------------------------------
 # app routes for Room
 # ------------------------------------
@@ -109,7 +113,7 @@ def userschedule():
     if request.method == "POST":
         return BaseUserSchedule().addNewUserSchedule(request.form)
     else:
-        return BaseUserSchedule().getAllUserSchedule()
+        return BaseUserSchedule().getAllUserSchedule(request.args)
 
 @app.route('/waza/userschedule/<int:usid>', methods=['DELETE', 'GET', 'PUT'])
 def userschedule_detail(usid):

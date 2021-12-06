@@ -14,11 +14,11 @@ class MeetingDAO:
                                      password=pg_config['password'],
                                      )
 
-    def addNewMeeting(self, created_by, room_id, start_at, end_at):
+    def addNewMeeting(self, created_by, room_id, start_at, end_at, name, description):
         with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             time_now = datetime.now()
-            qry = "INSERT INTO Meeting (created_by, room_id, start_at, end_at, created_at) VALUES (%s, %s, %s, %s, %s) RETURNING id"
-            cur.execute(qry, (created_by, room_id, start_at, end_at, time_now,))
+            qry = "INSERT INTO Meeting (created_by, room_id, start_at, end_at, created_at, name, description) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id"
+            cur.execute(qry, (created_by, room_id, start_at, end_at, time_now, name, description,))
             self.conn.commit()
             record_id = cur.fetchone()['id']
             cur.close()
@@ -48,10 +48,18 @@ class MeetingDAO:
             cur.close()
             return True
 
-    def updateMeeting(self, mid, created_by, room_id, start_at, end_at):
+    def updateMeeting(self, mid, created_by, room_id, start_at, end_at, name, description):
         with self.conn.cursor() as cur:
-            qry = "Update Meeting SET created_by = (%s), room_id = (%s), start_at = (%s), end_at = (%s) WHERE id = (%s);"
-            cur.execute(qry, (created_by, room_id, start_at, end_at, mid,))
+            qry = "Update Meeting SET created_by = (%s), room_id = (%s), start_at = (%s), end_at = (%s), name = (%s), description = (%s) WHERE id = (%s);"
+            cur.execute(qry, (created_by, room_id, start_at, end_at, name, description, mid,))
             self.conn.commit()
             cur.close()
             return True
+
+    def getAllUserMeetingsWithRoomName(self, user_id):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = "SELECT m.*, r.name as room_name FROM invitee i LEFT JOIN meeting m on m.id = i.meeting_id INNER JOIN room r on r.id = m.room_id WHERE i.user_id = %s;"
+            cur.execute(qry, (user_id,))
+            record = cur.fetchall()
+            cur.close()
+            return record

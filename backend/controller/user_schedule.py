@@ -1,12 +1,23 @@
 from model.user_schedule import UserScheduleDAO
 from flask import jsonify
 import datetime
+from model.user import UserDAO
 
 
 class BaseUserSchedule:
-    def getAllUserSchedule(self):
+    def getAllUserSchedule(self, arguments):
         dao = UserScheduleDAO()
-        invitees = dao.getAllUserSchedule()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+        get_all = arguments.get('all', '')  # used to get all that the user can see, or only his. Default will be his.
+        if get_all == 'true':
+            if user['role_id'] not in range(1, 4):
+                return jsonify("You do not have enough permissions for this operation."), 403
+            else:
+                invitees = dao.getAllUserSchedule()
+        else:
+            invitees = dao.getAllUserScheduleByUserId(user_id)
         return jsonify(invitees), 200
 
 
