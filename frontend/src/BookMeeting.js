@@ -30,6 +30,7 @@ import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker'
 function BookMeeting() {
     const [dates, setDates] = useState([]);
     const [open, setOpen] = useState(false);
+    const [openCreateUnavailability, setOpenCreateUnavailability] = useState(false);
     const [openMeetingDetail, setOpenMeetingDetail] = useState(false);
     const [openUnavailabilityDetail, setOpenUnavailabilityDetail] = useState(false);
     const [updateInProgress, setUpdateInProgress] = useState(false);
@@ -37,6 +38,7 @@ function BookMeeting() {
     const [deleteInProgressUnavailability, setDeleteInProgressUnavailability] = useState(false);
     const localizer = momentLocalizer(moment);
     const [dateRangeValue, onChangeDateRangeValue] = useState([new Date(), new Date()]);
+    const [dateRangeValueUnavailability, onChangeDateRangeValueUnavailability] = useState([new Date(), moment(new Date()).add(30, 'm').toDate()]);
     const [roomsAvailable, setRoomsAvailable] = useState([]);
     const [usersAvailable, setUsersAvailable] = useState([]);
     const [newMeetingInformation, setNewMeetingInformation] = useState(new Map());
@@ -73,6 +75,28 @@ function BookMeeting() {
             console.log(data)
             getMeetings();
             setOpen(false)
+        })();
+    }
+
+    const createUnavailability = (event, newValue) => {
+        (async () => {
+            let start_at = moment(dateRangeValueUnavailability[0]).format('YYYY-MM-DD HH:mm:ss');
+            let end_at = moment(dateRangeValueUnavailability[1]).format('YYYY-MM-DD HH:mm:ss');
+            let form_data = new FormData();
+            
+            form_data.append('user_id', 3);
+            form_data.append('start_at', start_at);
+            form_data.append('end_at', end_at);
+
+            const requestOptions = {
+                method: 'POST',
+                body: form_data
+            };
+            const response = await fetch('http://127.0.0.1:5000/waza/userschedule', requestOptions);
+            const data = await response.json();
+            console.log(data)
+            getMeetings();
+            setOpenCreateUnavailability(false)
         })();
     }
 
@@ -361,6 +385,39 @@ function BookMeeting() {
                 <Button onClick={() => setOpen(false)}>X</Button>
             </Modal.Actions>
         </Modal>
+        {/*Create a new unavailability*/}
+        <Modal
+            centered={false}
+            open={openCreateUnavailability}
+            onClose={() => setOpenCreateUnavailability(false)}
+            onOpen={() => setOpenCreateUnavailability(true)}
+        >
+            <Modal.Header>Create a Unavailable Period</Modal.Header>
+            <Modal.Content>
+                <Modal.Description>
+                    Please select an start and endtime for your unavailable period.
+                </Modal.Description>
+                <Grid columns={1} padded>
+                    <Grid.Row>
+                        <DateTimeRangePicker
+                            onChange={onChangeDateRangeValueUnavailability}
+                            value={dateRangeValueUnavailability}
+                        />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Form>
+                            <Button onClick={createUnavailability}
+                                    color={'green'}>Create Unavailability</Button>
+                        </Form>
+                    </Grid.Row>
+                </Grid>
+
+
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => setOpenCreateUnavailability(false)}>X</Button>
+            </Modal.Actions>
+        </Modal>
         {/*Meeting Details*/}
         <Modal
             centered={false}
@@ -559,7 +616,7 @@ function BookMeeting() {
             <Button
                 fluid
                 onClick={() => {
-                    setOpen(true)
+                    setOpenCreateUnavailability(true)
                 }}
             > Mark as unavailable</Button>
         </Container>
