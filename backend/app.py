@@ -113,7 +113,7 @@ def userschedule():
     if request.method == "POST":
         return BaseUserSchedule().addNewUserSchedule(request.form)
     else:
-        return BaseUserSchedule().getAllUserSchedule()
+        return BaseUserSchedule().getAllUserSchedule(request.args)
 
 @app.route('/waza/userschedule/<int:usid>', methods=['DELETE', 'GET', 'PUT'])
 def userschedule_detail(usid):

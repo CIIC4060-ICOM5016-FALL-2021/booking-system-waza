@@ -114,3 +114,11 @@ class UserScheduleDAO:
             records = cur.fetchall()
             cur.close()
             return records
+
+    def getAllUserScheduleByUserId(self, uid):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = "SELECT * FROM userschedule WHERE user_id = %s;"
+            cur.execute(qry, (uid,))
+            records = cur.fetchall()
+            cur.close()
+            return records

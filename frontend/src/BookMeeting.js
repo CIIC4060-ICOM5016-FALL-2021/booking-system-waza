@@ -31,8 +31,10 @@ function BookMeeting() {
     const [dates, setDates] = useState([]);
     const [open, setOpen] = useState(false);
     const [openMeetingDetail, setOpenMeetingDetail] = useState(false);
+    const [openUnavailabilityDetail, setOpenUnavailabilityDetail] = useState(false);
     const [updateInProgress, setUpdateInProgress] = useState(false);
     const [deleteInProgress, setDeleteInProgress] = useState(false);
+    const [deleteInProgressUnavailability, setDeleteInProgressUnavailability] = useState(false);
     const localizer = momentLocalizer(moment);
     const [dateRangeValue, onChangeDateRangeValue] = useState([new Date(), new Date()]);
     const [roomsAvailable, setRoomsAvailable] = useState([]);
@@ -40,6 +42,7 @@ function BookMeeting() {
     const [newMeetingInformation, setNewMeetingInformation] = useState(new Map());
     const [meetingDetails, setMeetingDetails] = useState([]);
     const [meetingInvitees, setMeetingInvitees] = useState([]);
+    const [scheduleDetails, setScheduleDetails] = useState([]);
 
     const modifyMeetingForm = (key, value) => {
         newMeetingInformation.set(key, value)
@@ -94,23 +97,60 @@ function BookMeeting() {
         })();
     }
 
+    const deleteUnavailability = (event, newValue) => {
+        (async () => {
+            setDeleteInProgressUnavailability(true)
+            const requestOptions = {
+                method: 'DELETE',
+            };
+
+            const response = await fetch(`http://127.0.0.1:5000/waza/userschedule/${(scheduleDetails['resources']['schedule_id'])}`, requestOptions);
+            const data = await response.json();
+            console.log(data);
+            setOpenUnavailabilityDetail(false);
+            setDeleteInProgressUnavailability(false)
+            getMeetings();
+        })();
+    }
+
     function getMeetings() {
+        let events = [];
+
         fetch("http://127.0.0.1:5000/waza/meeting/?user_id=1")
             .then(res => res.json())
             .then(
                 (result) => {
-                    let events = [];
                     for (var e in result) {
                         events.push({
                             'title': result[e]['room_name'],
                             'start': new Date(result[e]['start_at'] + '-0400 (AST)'),
                             'end': new Date(result[e]['end_at'] + '-0400 (AST)'),
-                            'resources': {'meeting_id': result[e]['id'], 'room_id': result[e]['room_id']}
+                            'resources': {'meeting_id': result[e]['id'], 'room_id': result[e]['room_id'], 'type': 'meeting'}
                         });
                     }
-                    setDates(events);
                 },
-            );
+            ).then(
+            (result) => {
+                fetch("http://127.0.0.1:5000/waza/userschedule?user_id=3")
+                    .then(res => res.json())
+                    .then(
+                        (result) => {
+                            for (var e in result) {
+                                events.push({
+                                    'title': '- Set as Not Available -',
+                                    'start': new Date(result[e]['start_at'] + '-0400 (AST)'),
+                                    'end': new Date(result[e]['end_at'] + '-0400 (AST)'),
+                                    'resources': {'type': 'unavailable', 'schedule_id': result[e]['id']}
+                                });
+                            }
+                            setDates(events);
+                        },
+                    );
+            },
+        )
+
+
+        // setDates(events);
     }
 
     function getMeetingDetails(meeting_id, room_id) {
@@ -147,6 +187,12 @@ function BookMeeting() {
             );
     }
 
+    function getScheduleDetails(event) {
+        console.log(event);
+        setScheduleDetails(event);
+        setOpenUnavailabilityDetail(true);
+    }
+
     const updateMeeting = (event, newValue) => {
         (async () => {
             setUpdateInProgress(true)
@@ -158,9 +204,6 @@ function BookMeeting() {
             form_data.append('end_at', moment(meetingDetails['end_at']).format('YYYY-MM-DD HH:mm:ss'))
             form_data.append('created_by', meetingDetails['meeting_creator_id'])
             form_data.append('room_id', meetingDetails['room_id'])
-            // for (let [key, value] of form_data) {
-            //     console.log([key, value])
-            // }
 
             const requestOptions = {
                 method: 'PUT',
@@ -200,11 +243,13 @@ function BookMeeting() {
                 setOpen(true);
             }}
             onSelectEvent={(selected) => {
-                getMeetingDetails(selected['resources']['meeting_id'], selected['resources']['room_id']);
+                if (selected['resources']['type'] === 'unavailable') getScheduleDetails(selected)
+                else getMeetingDetails(selected['resources']['meeting_id'], selected['resources']['room_id']);
             }}
         >
 
         </Calendar>
+        {/*Create a new meeting*/}
         <Modal
             centered={false}
             open={open}
@@ -316,6 +361,7 @@ function BookMeeting() {
                 <Button onClick={() => setOpen(false)}>X</Button>
             </Modal.Actions>
         </Modal>
+        {/*Meeting Details*/}
         <Modal
             centered={false}
             open={openMeetingDetail}
@@ -453,6 +499,47 @@ function BookMeeting() {
                     <Grid.Row>
                     </Grid.Row>
                     <Grid.Row>
+                    </Grid.Row>
+                </Grid>
+
+
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => setOpenMeetingDetail(false)}>X</Button>
+            </Modal.Actions>
+        </Modal>
+        {/*Unavailability Details*/}
+        <Modal
+            centered={false}
+            open={openUnavailabilityDetail}
+            onClose={() => setOpenUnavailabilityDetail(false)}
+            onOpen={() => setOpenUnavailabilityDetail(true)}
+        >
+            <Dimmer active={deleteInProgressUnavailability} inverted>
+                <Loader inverted>Deleting</Loader>
+            </Dimmer>
+            <Modal.Header>Unavailability Details</Modal.Header>
+            <Modal.Content>
+                <Grid columns={2} padded>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form>
+                                <Card fluid>
+                                    <Card.Content header={'Unavailable Period'}/>
+                                    <Card.Content>
+                                        <p>
+                                            <b>Start
+                                                At:</b> {(moment(scheduleDetails['start']).format('dddd, MMMM Do YYYY, h:mm a'))}
+                                            <br/>
+                                            <b>End
+                                                At:</b> {(moment(scheduleDetails['end']).format('dddd, MMMM Do YYYY, h:mm a'))}
+                                        </p>
+                                    </Card.Content>
+                                </Card>
+
+                                <Button negative onClick={deleteUnavailability}>Delete Unavailability</Button>
+                            </Form>
+                        </Grid.Column>
                     </Grid.Row>
                 </Grid>
 
