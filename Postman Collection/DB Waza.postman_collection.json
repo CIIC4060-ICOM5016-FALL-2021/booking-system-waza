@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "544c41e7-4a24-4546-bcdd-af46c2df847a",
+		"_postman_id": "38014a10-1667-42ef-885d-ee73fad550c8",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -171,6 +171,16 @@
 								{
 									"key": "user_id",
 									"value": "1"
+								},
+								{
+									"key": "start_at",
+									"value": "2021-11-08 14:30:00",
+									"disabled": true
+								},
+								{
+									"key": "end_at",
+									"value": "2021-11-08 19:30:00",
+									"disabled": true
 								}
 							]
 						}
@@ -259,6 +269,11 @@
 								{
 									"key": "user_id",
 									"value": "10"
+								},
+								{
+									"key": "all",
+									"value": "true",
+									"disabled": true
 								}
 							]
 						}
@@ -321,14 +336,20 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/1093",
+							"raw": "{{base_url}}/waza/meeting/788?user_id=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"1093"
+								"788"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -354,18 +375,28 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-12-06 11:00:00.000000",
+									"value": "2021-12-06 11:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-12-06 12:00:00.000000",
+									"value": "2021-12-06 12:00:00",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Hello World",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "HW Description",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/4",
+							"raw": "{{base_url}}/waza/meeting/4?user_id=1",
 							"host": [
 								"{{base_url}}"
 							],
@@ -376,9 +407,8 @@
 							],
 							"query": [
 								{
-									"key": "",
-									"value": "",
-									"disabled": true
+									"key": "user_id",
+									"value": "1"
 								}
 							]
 						}
@@ -391,14 +421,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/meeting/1119?user_id=10",
+							"raw": "{{base_url}}/waza/meeting/1039?user_id=10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"meeting",
-								"1119"
+								"1039"
 							],
 							"query": [
 								{
@@ -430,12 +460,12 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2022-01-11 11:00:00",
+									"value": "2022-01-13 11:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2022-01-11 11:45:00",
+									"value": "2022-01-13 11:45:00",
 									"type": "text"
 								},
 								{
@@ -454,6 +484,25 @@
 								"waza",
 								"meeting_with_invitees",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meeting with Invitees Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/meeting_with_invitees/963",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"meeting_with_invitees",
+								"963"
 							]
 						}
 					},
@@ -588,14 +637,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/invitee/21",
+							"raw": "{{base_url}}/waza/invitee/23",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"invitee",
-								"21"
+								"23"
 							]
 						}
 					},
@@ -612,13 +661,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/userschedule",
+							"raw": "{{base_url}}/waza/userschedule?user_id=3",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"userschedule"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -639,12 +699,12 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-12-11 11:00:00",
+									"value": "2021-12-13 11:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-12-11 13:00:00",
+									"value": "2021-12-13 13:00:00",
 									"type": "text"
 								}
 							]
@@ -740,14 +800,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/userschedule/2",
+							"raw": "{{base_url}}/waza/userschedule/3",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"waza",
 								"userschedule",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -783,6 +843,31 @@
 					"response": []
 				},
 				{
+					"name": "Get All Detailed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/waza/roomschedule/detail?user_id=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"roomschedule",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Post",
 					"request": {
 						"method": "POST",
@@ -797,12 +882,12 @@
 								},
 								{
 									"key": "start_at",
-									"value": "2021-01-21 23:00:00",
+									"value": "2021-03-21 20:00:00",
 									"type": "text"
 								},
 								{
 									"key": "end_at",
-									"value": "2021-01-21 23:56:37",
+									"value": "2021-03-21 21:56:37",
 									"type": "text"
 								}
 							]
@@ -1073,6 +1158,61 @@
 					"response": []
 				},
 				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "role_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "john.doe@upr.edu",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "1231231234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete",
 					"request": {
 						"method": "DELETE",
@@ -1173,12 +1313,46 @@
 					"response": []
 				},
 				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/waza/login?email=edgardo.figueroa5@upr.edu&pw=1234",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "edgardo.figueroa5@upr.edu"
+								},
+								{
+									"key": "pw",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get users time available",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/waza/user/time_available?users=[1,2,3,4,5]",
+							"raw": "{{base_url}}/waza/user/time_available?users=[1,2,3]",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1190,7 +1364,7 @@
 							"query": [
 								{
 									"key": "users",
-									"value": "[1,2,3,4,5]"
+									"value": "[1,2,3]"
 								}
 							]
 						}
@@ -1214,85 +1388,6 @@
 								"1"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Post",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "role_id",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "first_name",
-									"value": "John",
-									"type": "text"
-								},
-								{
-									"key": "last_name",
-									"value": "Doe",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "john.doe@upr.edu",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "1231231234",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/waza/user?role_id=1&first_name=jose&last_name=feliciano&email=viajoSinVer@upr.edu&phone=787-123-4567",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"waza",
-								"user"
-							],
-							"query": [
-								{
-									"key": "role_id",
-									"value": "1"
-								},
-								{
-									"key": "first_name",
-									"value": "jose"
-								},
-								{
-									"key": "last_name",
-									"value": "feliciano"
-								},
-								{
-									"key": "email",
-									"value": "viajoSinVer@upr.edu"
-								},
-								{
-									"key": "phone",
-									"value": "787-123-4567"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "userValidation",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": null
 					},
 					"response": []
 				}
@@ -1320,6 +1415,11 @@
 		}
 	],
 	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://guarded-hamlet-30872.herokuapp.com",
+			"disabled": true
+		},
 		{
 			"key": "base_url",
 			"value": "https://guarded-hamlet-30872.herokuapp.com"
