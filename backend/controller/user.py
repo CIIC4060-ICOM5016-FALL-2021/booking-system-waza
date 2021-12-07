@@ -17,11 +17,13 @@ class BaseUser:
         else:
             return jsonify(user), 200
 
-    def getUserLoginValidation(self, un,pw):
+    def getUserLoginValidation(self, arguments):
         dao = UserDAO()
-        user = dao.getUserLoginValidation(un,pw)
+        email = arguments.get('email', '')
+        passwd = arguments.get('pw', '')
+        user = dao.getUserLoginValidation(email,passwd)
         if not user:
-            return jsonify("Not Found"), 404
+            return jsonify("User Not Found"), 404
         else:
             return jsonify(user), 200
 

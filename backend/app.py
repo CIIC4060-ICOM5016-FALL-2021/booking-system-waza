@@ -183,13 +183,9 @@ def users_detail(uid):
     else:
         return jsonify("Method Not Allowed"),405
 
-@app.route('/waza/user/<un>/<pw>', methods=['DELETE', 'GET', 'PUT'])
-def users_Login_Validation(un,pw):
-    if request.method == "GET":
-        return BaseUser().getUserLoginValidation(un,pw)
-
-    else:
-        return jsonify("Method Not Allowed"),405
+@app.route('/waza/login/', methods=['GET'])
+def users_Login_Validation():
+    return BaseUser().getUserLoginValidation(request.args)
 
 
 

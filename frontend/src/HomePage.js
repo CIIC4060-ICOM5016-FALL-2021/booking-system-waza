@@ -23,12 +23,12 @@ function HomePage() {
 
     //LOGIN
 //---------------------------------------------------------------------------------------
-     function UserAuthantication()
+     function UserAuthentication()
     {
         let un = document.getElementById("un").value;
         let pw = document.getElementById("pw").value;
 
-        fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user/'+un+'/'+pw)
+        fetch(`http://127.0.0.1:5000/waza/login/?email=${un}&pw=${pw}`)
             .then(response =>
             response.json().then(data => ({
                     data: data,
@@ -37,11 +37,9 @@ function HomePage() {
             ).then(res => {
                 let userID = res.data['id']
                 addActiveUser(un,userID)
+                if(res.status === 200) return window.location.href = "UserView";
+                else window.alert("Invalid Credentials.");
             }));
-
-
-        return window.location.href = "UserView";
-
     }
 //-----------------------------------------------------------------------------------------------
 
@@ -54,7 +52,6 @@ function HomePage() {
         let email = document.getElementById("email").value
         let phone = document.getElementById("phone").value
         let password = document.getElementById("unpw").value
-        window.alert(lastName)
         let form_data = new FormData();
         form_data.append('role_id', role_id);
         form_data.append('first_name', firstName);
@@ -77,9 +74,11 @@ function HomePage() {
                 ).then(res => {
                     let userID = res.data['id']
                     addActiveUser(email,userID)
+                    if(res.status === 200) return window.location.href = "UserView";
+                    else window.alert("Invalid Information.");
                 }))
             .catch(error => {
-                window.alert(error)
+                window.alert('Invalid Credentials.')
             });
 
     }
@@ -121,7 +120,7 @@ function HomePage() {
                                 type='password'
                                 id='pw'
                             />
-                            <Button content='Login' primary onClick={UserAuthantication}/>
+                            <Button content='Login' primary onClick={UserAuthentication}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>
@@ -137,6 +136,7 @@ function HomePage() {
                                     icon='lock'
                                     iconPosition='left'
                                     label='Password'
+                                    type='password'
                                     placeholder='Password'
                                     id='unpw'
                                 />

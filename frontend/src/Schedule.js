@@ -15,6 +15,7 @@ import {Button, Card, Container, Modal, Grid, Form} from "semantic-ui-react";
 
 
 function Schedule(){
+    const logged_uid = localStorage.getItem('user_id');
     const [dates, setDates] = useState([{
         'title': 'Selectio',
         'allDay': false,
@@ -28,7 +29,7 @@ function Schedule(){
 
     function getSchedule(){
 	let events = [];
-	fetch("http://127.0.0.1:5000/waza/userschedule?user_id=1")
+	fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/userschedule?user_id=${logged_uid}`)
                     .then(res => res.json())
                     .then(
                         (result) => {
