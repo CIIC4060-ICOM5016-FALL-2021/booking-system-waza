@@ -32,6 +32,7 @@ function Rooms() {
     const [newRoomInformation, setNewRoomInformation] = useState(new Map());
     const [updatedRoomInformation, setNewUpdatedInformation] = useState(new Map());
     const [deleteInProgress, setDeleteInProgress] = useState(false);
+    const [roleDisabled, setRoleDisabled] = useState(false);
 
     const modifyRoomForm = (key, value) => {
         newRoomInformation.set(key, value)
@@ -192,7 +193,19 @@ function Rooms() {
 
     }
 
+    const user_info = () => {
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/user/${logged_uid}`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    if (result['role_id'] === 1) setRoleDisabled(false)
+                    else setRoleDisabled(true)
+                },
+            ).catch(setRoleDisabled(true));
+    }
+
     useEffect(() => {
+        user_info()
         getRooms();
     }, [])
 
@@ -262,10 +275,22 @@ function Rooms() {
             const requestOptions = {
                 method: 'DELETE',
             };
-            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/room/${room_id}`, requestOptions);
-            console.log(await response.json())
-            setDeleteInProgress(false);
-            getRooms();
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/room/${room_id}`, requestOptions)
+                .then(response =>
+                    response.json().then(data => ({
+                            data: data,
+                            status: response.status
+                        })
+                    ).then(res => {
+                        setDeleteInProgress(false);
+                        getRooms();
+                    }))
+                .catch(error => {
+                    window.alert('Invalid Deletion.')
+                    setDeleteInProgress(false);
+                });
+            // console.log(await response.json())
+
         })();
     }
 
@@ -300,14 +325,24 @@ function Rooms() {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {info.map(({room_name, department_name, capacity, room_type, id, department_id, roomtype_id}) => (
+                        {info.map(({
+                                       room_name,
+                                       department_name,
+                                       capacity,
+                                       room_type,
+                                       id,
+                                       department_id,
+                                       roomtype_id
+                                   }) => (
                             <Table.Row>
                                 <Table.Cell>{room_name}</Table.Cell>
                                 <Table.Cell>{department_name}</Table.Cell>
                                 <Table.Cell>{capacity}</Table.Cell>
                                 <Table.Cell>{room_type}</Table.Cell>
-                                <Table.Cell><Button onClick={() => deleteRoom(id)}>DELETE</Button></Table.Cell>
-                                <Table.Cell><Button onClick={() => prepareForUpdate(id, room_name, capacity, roomtype_id, department_id, department_name, room_type)}>UPDATE</Button></Table.Cell>
+                                <Table.Cell><Button disabled={roleDisabled}
+                                                    onClick={() => deleteRoom(id)}>DELETE</Button></Table.Cell>
+                                <Table.Cell><Button disabled={roleDisabled}
+                                                    onClick={() => prepareForUpdate(id, room_name, capacity, roomtype_id, department_id, department_name, room_type)}>UPDATE</Button></Table.Cell>
                             </Table.Row>
 
                         ))}
@@ -379,7 +414,6 @@ function Rooms() {
         </Modal>
 
 
-
         <Modal
             centered={false}
             open={openUpdateRoom}
@@ -394,14 +428,16 @@ function Rooms() {
                             <Form>
                                 <Form.Field required>
                                     <label>Room Name</label>
-                                    <input placeholder='Room Name' defaultValue={updatedRoomInformation.get('name')} onChange={(event) => {
-                                        event.preventDefault();
-                                        modifyRoomUpdateForm('name', event.target.value)
-                                    }}/>
+                                    <input placeholder='Room Name' defaultValue={updatedRoomInformation.get('name')}
+                                           onChange={(event) => {
+                                               event.preventDefault();
+                                               modifyRoomUpdateForm('name', event.target.value)
+                                           }}/>
                                 </Form.Field>
                                 <Form.Field required>
                                     <label>Capacity</label>
-                                    <input placeholder='Room Capacity' defaultValue={updatedRoomInformation.get('capacity')} onChange={(event) => {
+                                    <input placeholder='Room Capacity'
+                                           defaultValue={updatedRoomInformation.get('capacity')} onChange={(event) => {
                                         event.preventDefault();
                                         modifyRoomUpdateForm('capacity', event.target.value)
                                     }}/>
