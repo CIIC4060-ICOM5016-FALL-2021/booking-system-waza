@@ -23,6 +23,7 @@ function Schedule(){
         'end': new Date(moment.now())
     }]);
     const [open, setOpen] = useState(false);
+
     const [openUnavailabilityDetail, setOpenUnavailabilityDetail] = useState(false);
     const [scheduleDetails, setScheduleDetails] = useState([]);
     const localizer = momentLocalizer(moment);
@@ -58,6 +59,7 @@ function Schedule(){
     useEffect(() => {
 	getSchedule();
     }, [])
+
 
     return <Container style={{ height: 800 }}><Calendar
         selectable
