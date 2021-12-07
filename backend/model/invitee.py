@@ -88,3 +88,35 @@ class InviteeDAO:
             records = cur.fetchall()
             cur.close()
             return records
+
+
+    def getMeetingWithInviteesDetail(self, mid):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = """
+            SELECT
+                m.id as meeting_id,
+                m.start_at,
+                m.end_at,
+                m.name,
+                m.description,
+                i.id as invitee_id,
+                creator.id as meeting_creator_id,
+                creator.first_name as meeting_creator_first_name,
+                creator.last_name as meeting_creator_last_name,
+                creator.email as meeting_creator_email,
+                creator.phone as meeting_creator_phone,
+                invited.id as invitee_user_id,
+                invited.first_name as invitee_user_first_name,
+                invited.last_name as invitee_user_last_name,
+                invited.email as invitee_user_email,
+                invited.phone as invitee_user_phone
+            FROM invitee i
+            INNER JOIN meeting m on m.id = i.meeting_id
+            INNER JOIN "User" creator on creator.id = m.created_by
+            INNER JOIN "User" invited on invited.id = i.user_id
+            WHERE m.id = %s;
+            """
+            cur.execute(qry, (mid,))
+            records = cur.fetchall()
+            cur.close()
+            return records

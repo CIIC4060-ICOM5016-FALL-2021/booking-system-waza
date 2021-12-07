@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8fa84943-75a8-41dc-9c94-b3649355ccb7",
+		"_postman_id": "544c41e7-4a24-4546-bcdd-af46c2df847a",
 		"name": "DB Waza",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1073,61 +1073,6 @@
 					"response": []
 				},
 				{
-					"name": "Post",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "role_id",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "first_name",
-									"value": "John",
-									"type": "text"
-								},
-								{
-									"key": "last_name",
-									"value": "Doe",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "john.doe@upr.edu",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "1231231234",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/waza/user",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"waza",
-								"user"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Delete",
 					"request": {
 						"method": "DELETE",
@@ -1269,6 +1214,85 @@
 								"1"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "role_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Doe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "john.doe@upr.edu",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "1231231234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/waza/user?role_id=1&first_name=jose&last_name=feliciano&email=viajoSinVer@upr.edu&phone=787-123-4567",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"waza",
+								"user"
+							],
+							"query": [
+								{
+									"key": "role_id",
+									"value": "1"
+								},
+								{
+									"key": "first_name",
+									"value": "jose"
+								},
+								{
+									"key": "last_name",
+									"value": "feliciano"
+								},
+								{
+									"key": "email",
+									"value": "viajoSinVer@upr.edu"
+								},
+								{
+									"key": "phone",
+									"value": "787-123-4567"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userValidation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}

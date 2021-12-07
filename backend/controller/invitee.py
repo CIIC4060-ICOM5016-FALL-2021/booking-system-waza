@@ -62,8 +62,9 @@ class BaseInvitee:
         start_at = data.get('start_at', '')
         end_at = data.get('end_at', '')
         users = data.get('users', '')
+        name = data.get('name', '')
+        description = data.get('description', '')
         user_list = json.loads(users)
-
         try:
             # validate date
             start_at = datetime.datetime.strptime(start_at, "%Y-%m-%d %H:%M:%S")
@@ -73,7 +74,7 @@ class BaseInvitee:
         if start_at > end_at:
             return jsonify("A meeting cannot have a start_at that is greater than its end_at."), 400
 
-        meeting = mdao.addNewMeeting(created_by, room_id, start_at, end_at)
+        meeting = mdao.addNewMeeting(created_by, room_id, start_at, end_at, name, description)
         room_capacity_available = rdao.getRoomCapacityAvailableByMeeting(meeting)
 
         if room_capacity_available['available_capacity'] <= 0 or room_capacity_available['available_capacity'] < len(users):
@@ -91,3 +92,12 @@ class BaseInvitee:
             return jsonify("The following user(s) could not be added to the meeting " + unavailable_users), 202
 
         return jsonify(mdao.getMeetingById(meeting)), 200
+
+    def getMeetingWithInviteesDetail(self, mid, arguments):
+        dao = InviteeDAO()
+        invitee = dao.getMeetingWithInviteesDetail(mid)
+        if not invitee:
+            return jsonify("Not Found"), 404
+        else:
+            return jsonify(invitee), 200
+

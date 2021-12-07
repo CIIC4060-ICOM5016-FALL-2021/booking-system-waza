@@ -112,3 +112,11 @@ class RoomScheduleDAO:
             records = cur.fetchall()
             cur.close()
             return records
+
+    def getAllRoomScheduleDetailed(self):
+        with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            qry = "SELECT rs.*, r.name as room_name, r.capacity as room_capacity, d.name as department_name FROM roomschedule rs INNER JOIN room r on r.id = rs.room_id INNER JOIN department d on d.id = r.department_id;"
+            cur.execute(qry)
+            records = cur.fetchall()
+            cur.close()
+            return records

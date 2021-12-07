@@ -119,3 +119,14 @@ class BaseRoomSchedule:
             return jsonify(result), 200
         return jsonify("NOT FOUND"), 404
 
+    def getAllRoomScheduleDetailed(self, arguments):
+        dao = RoomScheduleDAO()
+        udao = UserDAO()
+        user_id = arguments.get('user_id', '')
+        user = udao.getUserById(user_id)
+
+        if user['role_id'] not in range(1, 4):
+            return jsonify("You do not have enough permissions for this operation."), 403
+
+        invitees = dao.getAllRoomScheduleDetailed()
+        return jsonify(invitees), 200

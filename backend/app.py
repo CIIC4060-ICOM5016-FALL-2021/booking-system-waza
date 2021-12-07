@@ -41,6 +41,10 @@ def meetings_detail(mid):
 def meeting_with_invitees():
     return BaseInvitee().addMeetingWithInvitees(request.form)
 
+@app.route('/waza/meeting_with_invitees/<int:mid>', methods=['GET'])
+def meeting_with_invitees_detail(mid):
+    return BaseInvitee().getMeetingWithInviteesDetail(mid, request.args)
+
 # ------------------------------------
 # app routes for Room
 # ------------------------------------
@@ -99,6 +103,9 @@ def roomschedule_detail(rsid):
 def room_availability(rid):
     return BaseRoomSchedule().getRoomAvailabilityById(rid, request.args)
 
+@app.route('/waza/roomschedule/detail/', methods=['GET'])
+def roomschedule_detailed():
+        return BaseRoomSchedule().getAllRoomScheduleDetailed(request.args)
 
 # ------------------------------------
 # app routes for UserSchedule
@@ -109,7 +116,7 @@ def userschedule():
     if request.method == "POST":
         return BaseUserSchedule().addNewUserSchedule(request.form)
     else:
-        return BaseUserSchedule().getAllUserSchedule()
+        return BaseUserSchedule().getAllUserSchedule(request.args)
 
 @app.route('/waza/userschedule/<int:usid>', methods=['DELETE', 'GET', 'PUT'])
 def userschedule_detail(usid):
@@ -175,6 +182,10 @@ def users_detail(uid):
         return BaseUser().updateUser(uid, request.form)
     else:
         return jsonify("Method Not Allowed"),405
+
+@app.route('/waza/login/', methods=['GET'])
+def users_Login_Validation():
+    return BaseUser().getUserLoginValidation(request.args)
 
 
 

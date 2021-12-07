@@ -17,6 +17,16 @@ class BaseUser:
         else:
             return jsonify(user), 200
 
+    def getUserLoginValidation(self, arguments):
+        dao = UserDAO()
+        email = arguments.get('email', '')
+        passwd = arguments.get('pw', '')
+        user = dao.getUserLoginValidation(email,passwd)
+        if not user:
+            return jsonify("User Not Found"), 404
+        else:
+            return jsonify(user), 200
+
     def addNewUser(self, data):
         dao = UserDAO()
         
@@ -25,8 +35,10 @@ class BaseUser:
         last_name = data.get('last_name', '')
         email = data.get('email', '')
         phone = data.get('phone', '')
-        
-        uid = dao.addNewUser(role_id, first_name, last_name, email, phone)
+        password = data.get('password', '')
+        print(role_id,first_name,last_name,email,phone,password)
+        print('-----')
+        uid = dao.addNewUser(role_id, first_name, last_name, email, phone, password)
         return self.getUserById(uid)
 
     def updateUser(self, uid, data):
