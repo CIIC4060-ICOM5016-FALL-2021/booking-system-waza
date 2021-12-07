@@ -5,7 +5,8 @@ import moment from 'moment';
 import {Button, Card, Container, Modal, Tab} from "semantic-ui-react";
 import BookMeeting from "./BookMeeting";
 import Schedule from "./Schedule";
-import UserStatistics from "./UserStatistics"
+import UserStatistics from "./UserStatistics";
+import UserInfo from "./UserInfo";
 
 function UserView(){
     const [isAuth, setIsAuth] = useState(false)
@@ -21,7 +22,10 @@ function UserView(){
         },
         {
             menuItem: 'User Statistics', render: () => <UserStatistics/>//<Tab.Pane active={isAuth}><UserStatistics/></Tab.Pane>
-        }
+        },
+	{
+	    menuItem: 'User Info', render: () => <UserInfo/>
+	}
     ]
 
     return <Tab panes={panes}/>
