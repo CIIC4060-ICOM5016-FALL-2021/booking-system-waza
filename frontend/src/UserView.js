@@ -11,6 +11,7 @@ import UserInfo from "./UserInfo";
 
 function UserView() {
     const [isAuth, setIsAuth] = useState(localStorage.getItem('user_id') !== null)
+    if(!isAuth) return window.location.href = "Home";
     const panes = [
         {
             menuItem: 'Booking', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>

@@ -46,6 +46,7 @@ function BookMeeting() {
     const [meetingDetails, setMeetingDetails] = useState([]);
     const [meetingInvitees, setMeetingInvitees] = useState([]);
     const [scheduleDetails, setScheduleDetails] = useState([]);
+    const [disabledMeetingDeletion, setDisabledMeetingDeletion] = useState(true);
 
     const modifyMeetingForm = (key, value) => {
         newMeetingInformation.set(key, value)
@@ -71,11 +72,21 @@ function BookMeeting() {
                 method: 'POST',
                 body: form_data
             };
-            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/meeting_with_invitees/', requestOptions);
-            const data = await response.json();
-            console.log(data)
-            getMeetings();
-            setOpen(false)
+            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/meeting_with_invitees/', requestOptions)
+                .then(response =>
+                    response.json().then(data => ({
+                            data: data,
+                            status: response.status
+                        })
+                    ).then(res => {
+                        getMeetings();
+                        setOpen(false)
+                    }))
+                .catch(error => {
+                    window.alert('Invalid Information.')
+                });
+            // const data = await response.json();
+
         })();
     }
 
@@ -93,11 +104,22 @@ function BookMeeting() {
                 method: 'POST',
                 body: form_data
             };
-            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/userschedule', requestOptions);
-            const data = await response.json();
-            console.log(data)
-            getMeetings();
-            setOpenCreateUnavailability(false)
+            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/userschedule', requestOptions)
+                .then(response =>
+                    response.json().then(data => ({
+                            data: data,
+                            status: response.status
+                        })
+                    ).then(res => {
+                        getMeetings();
+                        setOpenCreateUnavailability(false)
+                    }))
+                .catch(error => {
+                    window.alert('Invalid Slot.')
+                });
+            // const data = await response.json();
+            // console.log(data)
+
         })();
     }
 
@@ -164,7 +186,11 @@ function BookMeeting() {
                             'title': result[e]['room_name'],
                             'start': new Date(result[e]['start_at'] + '-0400 (AST)'),
                             'end': new Date(result[e]['end_at'] + '-0400 (AST)'),
-                            'resources': {'meeting_id': result[e]['id'], 'room_id': result[e]['room_id'], 'type': 'meeting'}
+                            'resources': {
+                                'meeting_id': result[e]['id'],
+                                'room_id': result[e]['room_id'],
+                                'type': 'meeting'
+                            }
                         });
                     }
                 },
@@ -221,6 +247,10 @@ function BookMeeting() {
                     }
                     setMeetingDetails(mDetail.length > 0 ? mDetail[0] : null);
                     setMeetingInvitees(mDetail);
+
+                    if (mDetail.length === 0 || parseInt(mDetail[0]['meeting_creator_id']) !== parseInt(logged_uid))
+                        setDisabledMeetingDeletion(true)
+                    else setDisabledMeetingDeletion(false)
                     setOpenMeetingDetail(true);
                 },
             );
@@ -388,8 +418,7 @@ function BookMeeting() {
                                 onChange={(event, newValue) => modifyMeetingForm('users', ("[" + (newValue.value).toString() + "]"))}
                             />
                             <Button onClick={createMeeting} disabled={roomsAvailable.length === 0}
-                                    color={'green'}>Create
-                                Meeting</Button>
+                                    color={'green'}>Create Meeting</Button>
                         </Form>
                     </Grid.Row>
                 </Grid>
@@ -489,7 +518,8 @@ function BookMeeting() {
 
                                 <Button onClick={updateMeeting} fluid>Update</Button>
                                 <br></br>
-                                <Button negative onClick={deleteMeeting}>Delete Meeting</Button>
+                                <Button negative onClick={deleteMeeting} disabled={disabledMeetingDeletion}>Delete
+                                    Meeting</Button>
                             </Form>
                         </Grid.Column>
                         <Grid.Column>
@@ -558,7 +588,9 @@ function BookMeeting() {
                                                         </Feed.Extra>
                                                     </Feed.Content>
                                                     <Feed.Label>
-                                                        <Button negative onClick={() => deleteInvitee(invitee_id)} circular icon='delete' />
+                                                        <Button negative onClick={() => deleteInvitee(invitee_id)}
+                                                                disabled={disabledMeetingDeletion} circular
+                                                                icon='delete'/>
                                                     </Feed.Label>
                                                 </Feed.Event>
                                                 <Divider/>

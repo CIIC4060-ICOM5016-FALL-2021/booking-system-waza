@@ -47,7 +47,7 @@ function RoomSchedule() {
 
     function getSchedule() {
         let events = [];
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/roomschedule/detail?user_id=10")
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/roomschedule/detail?user_id=${logged_uid}`)
             .then(res => res.json())
             .then(
                 (result) => {
