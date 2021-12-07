@@ -292,7 +292,7 @@ function Rooms() {
             onClose={() => setOpenCreateRoom(false)}
             onOpen={() => setOpenCreateRoom(true)}
         >
-            <Modal.Header>Room Unavailability Details</Modal.Header>
+            <Modal.Header>Create Room</Modal.Header>
             <Modal.Content>
                 <Grid columns={2} padded>
                     <Grid.Row>
