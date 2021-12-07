@@ -28,6 +28,7 @@ import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker'
 
 
 function BookMeeting() {
+    const logged_uid = localStorage.getItem('user_id');
     const [dates, setDates] = useState([]);
     const [open, setOpen] = useState(false);
     const [openCreateUnavailability, setOpenCreateUnavailability] = useState(false);
@@ -61,7 +62,7 @@ function BookMeeting() {
     const createMeeting = (event, newValue) => {
         setOpen(true);
         (async () => {
-            var form_data = new FormData();
+            let form_data = new FormData();
             for (let [key, value] of newMeetingInformation) {
                 form_data.append(key, value);
             }
@@ -70,7 +71,7 @@ function BookMeeting() {
                 method: 'POST',
                 body: form_data
             };
-            const response = await fetch('http://127.0.0.1:5000/waza/meeting_with_invitees/', requestOptions);
+            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/meeting_with_invitees/', requestOptions);
             const data = await response.json();
             console.log(data)
             getMeetings();
@@ -84,7 +85,7 @@ function BookMeeting() {
             let end_at = moment(dateRangeValueUnavailability[1]).format('YYYY-MM-DD HH:mm:ss');
             let form_data = new FormData();
 
-            form_data.append('user_id', 3);
+            form_data.append('user_id', logged_uid);
             form_data.append('start_at', start_at);
             form_data.append('end_at', end_at);
 
@@ -92,7 +93,7 @@ function BookMeeting() {
                 method: 'POST',
                 body: form_data
             };
-            const response = await fetch('http://127.0.0.1:5000/waza/userschedule', requestOptions);
+            const response = await fetch('https://guarded-hamlet-30872.herokuapp.com/waza/userschedule', requestOptions);
             const data = await response.json();
             console.log(data)
             getMeetings();
@@ -108,11 +109,11 @@ function BookMeeting() {
             };
 
             for (var i in meetingInvitees) {
-                const response = await fetch(`http://127.0.0.1:5000/waza/invitee/${meetingInvitees[i]['invitee_id']}?user_id=3`, requestOptions);
+                const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/invitee/${meetingInvitees[i]['invitee_id']}?user_id=${logged_uid}`, requestOptions);
                 console.log(await response.json())
             }
 
-            const response = await fetch(`http://127.0.0.1:5000/waza/meeting/${meetingDetails['meeting_id']}?user_id=3`, requestOptions);
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/meeting/${meetingDetails['meeting_id']}?user_id=${logged_uid}`, requestOptions);
             const data = await response.json();
             console.log(data)
             setOpenMeetingDetail(false);
@@ -127,7 +128,7 @@ function BookMeeting() {
             const requestOptions = {
                 method: 'DELETE',
             };
-            const response = await fetch(`http://127.0.0.1:5000/waza/invitee/${invitee_id}?user_id=3`, requestOptions);
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/invitee/${invitee_id}?user_id=${logged_uid}`, requestOptions);
             console.log(await response.json())
             setOpenMeetingDetail(false);
             setDeleteInProgress(false)
@@ -142,7 +143,7 @@ function BookMeeting() {
                 method: 'DELETE',
             };
 
-            const response = await fetch(`http://127.0.0.1:5000/waza/userschedule/${(scheduleDetails['resources']['schedule_id'])}`, requestOptions);
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/userschedule/${(scheduleDetails['resources']['schedule_id'])}`, requestOptions);
             const data = await response.json();
             console.log(data);
             setOpenUnavailabilityDetail(false);
@@ -154,7 +155,7 @@ function BookMeeting() {
     function getMeetings() {
         let events = [];
 
-        fetch("http://127.0.0.1:5000/waza/meeting/?user_id=1")
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/meeting/?user_id=${logged_uid}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -169,7 +170,7 @@ function BookMeeting() {
                 },
             ).then(
             (result) => {
-                fetch("http://127.0.0.1:5000/waza/userschedule?user_id=3")
+                fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/userschedule?user_id=${logged_uid}`)
                     .then(res => res.json())
                     .then(
                         (result) => {
@@ -184,7 +185,7 @@ function BookMeeting() {
                             setDates(events);
                         },
                     );
-	    },
+            },
         )
 
 
@@ -192,7 +193,7 @@ function BookMeeting() {
     }
 
     function getMeetingDetails(meeting_id, room_id) {
-        fetch(`http://127.0.0.1:5000/waza/meeting_with_invitees/${meeting_id}`)
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/meeting_with_invitees/${meeting_id}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -247,7 +248,7 @@ function BookMeeting() {
                 method: 'PUT',
                 body: form_data
             };
-            const response = await fetch(`http://127.0.0.1:5000/waza/meeting/${meeting_id}?user_id=1`, requestOptions);
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/meeting/${meeting_id}?user_id=${logged_uid}`, requestOptions);
             const data = await response.json();
             console.log(data)
             getMeetings();
@@ -258,7 +259,7 @@ function BookMeeting() {
 
     useEffect(() => {
         // initial value
-        modifyMeetingForm('created_by', 1);
+        modifyMeetingForm('created_by', logged_uid);
         getMeetings();
     }, [])
 
@@ -313,7 +314,7 @@ function BookMeeting() {
                             modifyMeetingForm('start_at', start_at);
                             modifyMeetingForm('end_at', end_at);
 
-                            fetch(`http://127.0.0.1:5000/waza/room_available/?start_at=${start_at}&end_at=${end_at}`)
+                            fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/room_available/?start_at=${start_at}&end_at=${end_at}`)
                                 .then(res => res.json())
                                 .then(
                                     (result) => {
@@ -329,7 +330,7 @@ function BookMeeting() {
                                     },
                                 )
                             //get available users
-                            fetch(`http://127.0.0.1:5000/waza/user`)
+                            fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/user`)
                                 .then(res => res.json())
                                 .then(
                                     (result) => {

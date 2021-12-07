@@ -4,11 +4,12 @@ import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recha
 
 
 function UserStatistics() {
+    const logged_uid = localStorage.getItem('user_id');
     const [bookedRoomData, setBookedRoomData] = useState([]);
     const [bookedUserData, setBookedUserData] = useState([]);
 
     useEffect(() => {
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/user/most-used-room?user_id=2")
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/statistics/user/most-used-room?user_id=${logged_uid}`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -16,7 +17,7 @@ function UserStatistics() {
                     console.log(result)
                 },
             )
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/user/most-booked?user_id=2")
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/statistics/user/most-booked?user_id=${logged_uid}`)
             .then(res => res.json())
             .then(
                 (result) => {
