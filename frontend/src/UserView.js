@@ -8,6 +8,7 @@ import Schedule from "./Schedule";
 import RoomSchedule from "./RoomSchedule";
 import UserStatistics from "./UserStatistics";
 import UserInfo from "./UserInfo";
+import Rooms from "./Rooms";
 
 function UserView() {
     const [isAuth, setIsAuth] = useState(localStorage.getItem('user_id') !== null)
@@ -16,17 +17,20 @@ function UserView() {
             menuItem: 'Booking', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
         },
         {
-            menuItem: 'Schedule', render: () => <Tab.Pane active={isAuth}><Schedule/></Tab.Pane>
+            menuItem: 'User Schedule', render: () => <Tab.Pane active={isAuth}><Schedule/></Tab.Pane>
         },
         {
-            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><RoomSchedule/></Tab.Pane>
+            menuItem: 'Room Schedule', render: () => <Tab.Pane active={isAuth}><RoomSchedule/></Tab.Pane>
         },
         {
             menuItem: 'User Statistics', render: () => <Tab.Pane active={isAuth}><UserStatistics/></Tab.Pane>
         },
         {
             menuItem: 'User Info', render: () => <UserInfo/>
-        }
+        },
+	{
+	    menuItem: 'Room Management', render: () => <Rooms/>
+	}
     ]
 
     return <Tab panes={panes}/>
