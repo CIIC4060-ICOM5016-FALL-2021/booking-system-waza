@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {Divider, Header, Icon, Grid, Table, Card, Container} from "semantic-ui-react";
+import {Divider, Header, Icon, Grid, Table, Card, Container, Button} from "semantic-ui-react";
 
 
 
 function UserInfo() {
-
+	const logged_uid = localStorage.getItem('user_id')
     const[info, setInfo] = useState([{
 	'first_name': 'Fulano',
 	'last_name': 'Detal',
@@ -16,7 +16,7 @@ function UserInfo() {
     useEffect(() => {
 	let information = [];
 	let role_name = '';
-	fetch("http://127.0.0.1:5000/waza/user/10")
+	fetch("http://127.0.0.1:5000/waza/user/"+logged_uid)
 	    .then(res => res.json())
 	    .then(
 		(result) => {
@@ -47,6 +47,12 @@ function UserInfo() {
     }, [])
 
 
+	function removeActiveUser()
+	{
+// Remove data
+        localStorage.removeItem(logged_uid);
+		return window.location.href = "Home";
+	}
 
     return <Grid centered stackable columns={2} padded>
         <Grid.Row>
@@ -77,6 +83,7 @@ function UserInfo() {
 		<Table.Cell>{phone}</Table.Cell>
 		<Table.Cell>{role}</Table.Cell>
 		</Table.Row>
+
 	))}
 
     </Table.Body>
@@ -87,6 +94,7 @@ function UserInfo() {
 
 
 
+		<Button content='Logout' primary onClick={removeActiveUser}/>
     </Grid>
 }
 
