@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
-
+import UserView from "./UserView";
+import {Redirect} from "react-router-dom";
 
 
 function HomePage() {
@@ -13,15 +14,11 @@ function HomePage() {
 
     function addActiveUser(email,id)
     {
-        window.alert(localStorage.getItem(email))
-        // Add Data
-        localStorage.setItem(email, id);
-
+        localStorage.setItem('user_id', id);
+        localStorage.setItem('email', email);
 // Get data
 //        window.alert(localStorage.getItem(email))
-// // Remove data
-//         localStorage.removeItem(email);
-//         window.alert(localStorage.getItem(email))
+
     }
 
     //LOGIN
@@ -41,7 +38,9 @@ function HomePage() {
                 let userID = res.data['id']
                 addActiveUser(un,userID)
             }));
-        return 0;
+
+
+        return window.location.href = "UserView";
 
     }
 //-----------------------------------------------------------------------------------------------
@@ -55,11 +54,18 @@ function HomePage() {
         let email = document.getElementById("email").value
         let phone = document.getElementById("phone").value
         let password = document.getElementById("unpw").value
+        window.alert(lastName)
+        let form_data = new FormData();
+        form_data.append('role_id', role_id);
+        form_data.append('first_name', firstName);
+        form_data.append('last_name', lastName);
+        form_data.append('email', email);
+        form_data.append('phone', phone);
+        form_data.append('password', password);
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ role_id: role_id,first_name: firstName, last_name: lastName, email:email,phone:phone, passwor: password })
+            body: form_data
         };
 
         fetch('https://guarded-hamlet-30872.herokuapp.com/waza/user/', requestOptions)

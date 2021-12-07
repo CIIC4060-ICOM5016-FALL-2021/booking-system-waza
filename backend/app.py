@@ -103,6 +103,9 @@ def roomschedule_detail(rsid):
 def room_availability(rid):
     return BaseRoomSchedule().getRoomAvailabilityById(rid, request.args)
 
+@app.route('/waza/roomschedule/detail/', methods=['GET'])
+def roomschedule_detailed():
+        return BaseRoomSchedule().getAllRoomScheduleDetailed(request.args)
 
 # ------------------------------------
 # app routes for UserSchedule
