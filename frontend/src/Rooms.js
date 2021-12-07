@@ -23,14 +23,33 @@ function Rooms() {
         'department_name': 'Nowhere',
         'capacity': 1,
         'room_type': 'Classroom',
-        'id': 1
+        'id': 1,
+        'department_id': 1,
+        'roomtype_id': 2
     }]);
     const [openCreateRoom, setOpenCreateRoom] = useState(false);
+    const [openUpdateRoom, setOpenUpdateRoom] = useState(false);
     const [newRoomInformation, setNewRoomInformation] = useState(new Map());
+    const [updatedRoomInformation, setNewUpdatedInformation] = useState(new Map());
     const [deleteInProgress, setDeleteInProgress] = useState(false);
 
     const modifyRoomForm = (key, value) => {
         newRoomInformation.set(key, value)
+    }
+
+    const modifyRoomUpdateForm = (key, value) => {
+        updatedRoomInformation.set(key, value)
+    }
+
+    const prepareForUpdate = (room_id, room_name, capacity, roomtype_id, department_id, department_name, room_type) => {
+        updatedRoomInformation.set('room_id', room_id);
+        updatedRoomInformation.set('name', room_name);
+        updatedRoomInformation.set('capacity', capacity);
+        updatedRoomInformation.set('roomtype_id', roomtype_id);
+        updatedRoomInformation.set('department_id', department_id);
+        updatedRoomInformation.set('department_name', department_name);
+        updatedRoomInformation.set('roomtype_name', room_type)
+        setOpenUpdateRoom(true);
     }
 
     const departments = [
@@ -159,7 +178,9 @@ function Rooms() {
                             'department_name': department_name,
                             'capacity': result[r]['capacity'],
                             'room_type': room_type,
-                            'id': result[r]['id']
+                            'id': result[r]['id'],
+                            'department_id': result[r]['department_id'],
+                            'roomtype_id': result[r]['roomtype_id']
                         });
 
 
@@ -172,27 +193,8 @@ function Rooms() {
     }
 
     useEffect(() => {
-        // let information = [];
-        // let role_name = '';
-        // fetch("https://guarded-hamlet-30872.herokuapp.com/waza/user/"+logged_uid)
-        //     .then(res => res.json())
-        //     .then(
-        // 	(result) => {
-        // 	    // if(result['role_id'] == 3){
-        // 	    // 	getRooms();}
-        // 	    // else{
-        // 	    // 	window.alert("You are not allowed to manage rooms.");
-        // 	    // };
-        // 	},
-        //     );
         getRooms();
     }, [])
-
-
-    function removeRoom() {
-
-
-    }
 
     const createRoom = (event, newValue) => {
         (async () => {
@@ -214,6 +216,37 @@ function Rooms() {
                     ).then(res => {
                         getRooms();
                         setOpenCreateRoom(false)
+                    }))
+                .catch(error => {
+                    window.alert('Invalid Information.')
+                });
+            // const data = await response.json();
+
+        })();
+    }
+
+    const updateRoom = (event, newValue) => {
+        (async () => {
+            const room_id = updatedRoomInformation.get('room_id')
+            let form_data = new FormData();
+            form_data.append('capacity', updatedRoomInformation.get('capacity'));
+            form_data.append('department_id', updatedRoomInformation.get('department_id'));
+            form_data.append('roomtype_id', updatedRoomInformation.get('roomtype_id'));
+            form_data.append('name', updatedRoomInformation.get('name'));
+
+            const requestOptions = {
+                method: 'PUT',
+                body: form_data
+            };
+            const response = await fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/room/${room_id}`, requestOptions)
+                .then(response =>
+                    response.json().then(data => ({
+                            data: data,
+                            status: response.status
+                        })
+                    ).then(res => {
+                        getRooms();
+                        setOpenUpdateRoom(false)
                     }))
                 .catch(error => {
                     window.alert('Invalid Information.')
@@ -267,14 +300,14 @@ function Rooms() {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {info.map(({room_name, department_name, capacity, room_type, id}) => (
+                        {info.map(({room_name, department_name, capacity, room_type, id, department_id, roomtype_id}) => (
                             <Table.Row>
                                 <Table.Cell>{room_name}</Table.Cell>
                                 <Table.Cell>{department_name}</Table.Cell>
                                 <Table.Cell>{capacity}</Table.Cell>
                                 <Table.Cell>{room_type}</Table.Cell>
                                 <Table.Cell><Button onClick={() => deleteRoom(id)}>DELETE</Button></Table.Cell>
-                                <Table.Cell><Button>UPDATE</Button></Table.Cell>
+                                <Table.Cell><Button onClick={() => prepareForUpdate(id, room_name, capacity, roomtype_id, department_id, department_name, room_type)}>UPDATE</Button></Table.Cell>
                             </Table.Row>
 
                         ))}
@@ -333,6 +366,67 @@ function Rooms() {
                                     onChange={(event, newValue) => modifyRoomForm('roomtype_id', newValue.value)}
                                 />
                                 <Button onClick={createRoom} color={'green'}>Create Room</Button>
+                            </Form>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+
+
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => setOpenCreateRoom(false)}>X</Button>
+            </Modal.Actions>
+        </Modal>
+
+
+
+        <Modal
+            centered={false}
+            open={openUpdateRoom}
+            onClose={() => setOpenUpdateRoom(false)}
+            onOpen={() => setOpenUpdateRoom(true)}
+        >
+            <Modal.Header>Update Room</Modal.Header>
+            <Modal.Content>
+                <Grid columns={2} padded>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form>
+                                <Form.Field required>
+                                    <label>Room Name</label>
+                                    <input placeholder='Room Name' defaultValue={updatedRoomInformation.get('name')} onChange={(event) => {
+                                        event.preventDefault();
+                                        modifyRoomUpdateForm('name', event.target.value)
+                                    }}/>
+                                </Form.Field>
+                                <Form.Field required>
+                                    <label>Capacity</label>
+                                    <input placeholder='Room Capacity' defaultValue={updatedRoomInformation.get('capacity')} onChange={(event) => {
+                                        event.preventDefault();
+                                        modifyRoomUpdateForm('capacity', event.target.value)
+                                    }}/>
+                                </Form.Field>
+                                <Form.Dropdown
+                                    label={updatedRoomInformation.get('department_name')}
+                                    required
+                                    control={Select}
+                                    options={departments}
+                                    placeholder='Department'
+                                    search
+                                    searchInput={{id: 'form-select-control-room'}}
+                                    onChange={(event, newValue) => modifyRoomUpdateForm('department_id', newValue.value)}
+                                />
+                                <Form.Dropdown
+                                    label={updatedRoomInformation.get('roomtype_name')}
+                                    required
+                                    control={Select}
+                                    options={room_types}
+                                    placeholder='Room Types'
+                                    search
+                                    searchInput={{id: 'form-select-control-room'}}
+                                    onChange={(event, newValue) => modifyRoomUpdateForm('roomtype_id', newValue.value)}
+                                />
+                                <Button onClick={updateRoom} color={'green'}>Update Room</Button>
                             </Form>
                         </Grid.Column>
                     </Grid.Row>
