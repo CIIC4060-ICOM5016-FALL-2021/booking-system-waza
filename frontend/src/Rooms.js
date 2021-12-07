@@ -16,7 +16,7 @@ function Rooms() {
 	let rooms = [];
 	let department_name = '';
 	let room_type = '';
-	fetch("http://127.0.0.1:5000/waza/room")
+	fetch("https://guarded-hamlet-30872.herokuapp.com/waza/room")
 	    .then(res => res.json())
 	    .then(
 		(result) => {
@@ -90,7 +90,7 @@ function Rooms() {
     useEffect(() => {
 	// let information = [];
 	// let role_name = '';
-	// fetch("http://127.0.0.1:5000/waza/user/"+logged_uid)
+	// fetch("https://guarded-hamlet-30872.herokuapp.com/waza/user/"+logged_uid)
 	//     .then(res => res.json())
 	//     .then(
 	// 	(result) => {

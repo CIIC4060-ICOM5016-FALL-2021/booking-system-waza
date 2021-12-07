@@ -28,7 +28,7 @@ function HomePage() {
         let un = document.getElementById("un").value;
         let pw = document.getElementById("pw").value;
 
-        fetch(`http://127.0.0.1:5000/waza/login/?email=${un}&pw=${pw}`)
+        fetch(`https://guarded-hamlet-30872.herokuapp.com/waza/login/?email=${un}&pw=${pw}`)
             .then(response =>
             response.json().then(data => ({
                     data: data,
