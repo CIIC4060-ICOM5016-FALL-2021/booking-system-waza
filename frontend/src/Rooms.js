@@ -88,27 +88,27 @@ function Rooms() {
     }
 
     useEffect(() => {
-	let information = [];
-	let role_name = '';
-	fetch("http://127.0.0.1:5000/waza/user/"+logged_uid)
-	    .then(res => res.json())
-	    .then(
-		(result) => {
-		    if(result['role_id'] == 3){
-			getRooms();}
-		    else{
-			window.alert("You are not allowed to manage rooms.");
-		    };
-		},
-	    );
+	// let information = [];
+	// let role_name = '';
+	// fetch("http://127.0.0.1:5000/waza/user/"+logged_uid)
+	//     .then(res => res.json())
+	//     .then(
+	// 	(result) => {
+	// 	    // if(result['role_id'] == 3){
+	// 	    // 	getRooms();}
+	// 	    // else{
+	// 	    // 	window.alert("You are not allowed to manage rooms.");
+	// 	    // };
+	// 	},
+	//     );
+	getRooms();
     }, [])
 
 
-	function removeActiveUser()
-	{
-// Remove data
-        localStorage.removeItem(logged_uid);
-		return window.location.href = "Home";
+	function removeRoom()
+    {
+	
+
 	}
 
     return <Grid centered stackable columns={2} padded>
@@ -136,6 +136,8 @@ function Rooms() {
 		<Table.Cell>{department_name}</Table.Cell>
 		<Table.Cell>{capacity}</Table.Cell>
 		<Table.Cell>{room_type}</Table.Cell>
+		<Table.Cell><Button>DELETE</Button></Table.Cell>
+		<Table.Cell><Button>UPDATE</Button></Table.Cell>
 		</Table.Row>
 
 	))}
