@@ -1,44 +1,51 @@
 import React, {useState, useEffect} from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import {Divider, Header, Icon, Grid, Table} from "semantic-ui-react";
+import {Divider, Header, Icon, Grid, Table, Container} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 
 
 function BookMeeting() {
+    const logged_uid = localStorage.getItem('user_id');
+    const [isAuth, setIsAuth] = useState(logged_uid !== null)
     const [hourData, setHourData] = useState([]);
     const [bookedUserData, setBookedUserData] = useState([]);
     const [bookedRoomData, setBookedRoomData] = useState([]);
 
     useEffect(() => {
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/busiest-hours")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setHourData(result)
-                },
-                // (error) => {
-                //     this.setState({
-                //         isLoaded: true,
-                //         error
-                //     });
-                // }
-            )
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/most-booked-users")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setBookedUserData(result)
-                },
-            )
-        fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/most-booked-rooms")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setBookedRoomData(result)
-                },
-            )
+        if(isAuth) {
+            fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/busiest-hours")
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        setHourData(result)
+                    },
+                    // (error) => {
+                    //     this.setState({
+                    //         isLoaded: true,
+                    //         error
+                    //     });
+                    // }
+                )
+            fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/most-booked-users")
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        setBookedUserData(result)
+                    },
+                )
+            fetch("https://guarded-hamlet-30872.herokuapp.com/waza/statistics/global/most-booked-rooms")
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        setBookedRoomData(result)
+                    },
+                )
+        }
     }, [])
 
+    if(! isAuth) {
+        return <Container><Header as='h1'>You must be logged in</Header></Container>
+    }
 
     return <Grid centered stackable columns={2} padded>
         <Grid.Row>
