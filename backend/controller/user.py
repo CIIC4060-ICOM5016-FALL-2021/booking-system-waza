@@ -34,7 +34,8 @@ class BaseUser:
         email = data.get('email', '')
         phone = data.get('phone', '')
         password = data.get('password', '')
-        
+        print(role_id,first_name,last_name,email,phone,password)
+        print('-----')
         uid = dao.addNewUser(role_id, first_name, last_name, email, phone, password)
         return self.getUserById(uid)
 
