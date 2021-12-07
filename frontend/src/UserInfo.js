@@ -1,5 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {Divider, Header, Icon, Grid, Table, Card, Container, Button} from "semantic-ui-react";
+
+import {Divider,
+	Header,
+	Icon,
+	Grid,
+	Table,
+	Card,
+	Container,
+	Button,
+	Modal,
+	Form,
+	Dimmer,
+       Loader} from "semantic-ui-react";
+
+
+
+var role = 0;
 
 
 function UserInfo() {
@@ -11,6 +27,8 @@ function UserInfo() {
         'phone': '(555) 555-5555',
         'role': 'Nobody'
     }]);
+
+
 
     useEffect(() => {
         let information = [];
@@ -72,7 +90,92 @@ function UserInfo() {
         return window.location.href = "Home";
     }
 
-    return <Grid centered stackable columns={2} padded>
+    return <Container>
+	<Modal
+            centered={false}
+            open={open}
+            onClose={() => setOpen(false)}
+           e onOpen={() => setOpen(true)}
+	>     <Dimmer active={toUpdate} inverted>
+              <Loader inverted>Updating</Loader>
+            </Dimmer>
+            <Modal.Header>Update User Information</Modal.Header>
+            <Modal.Content>
+                <Modal.Description>
+                   Update your information.
+    </Modal.Description>
+    <Grid columnd={1} padded>
+    <Grid.Row>
+    <Grid.Column>
+    <Form>
+    <Card fluid>
+
+
+	<Card.Content>
+    <Form.Field>
+	<input placeholder='First Name' defaultValue={userDetails['first_name']}
+    onChange={(event) => {
+	event.preventDefault();
+	modifyUserInfo('first_name', event.target.value);
+    }
+    }
+    />
+    </Form.Field>
+    </Card.Content>
+
+	<Card.Content>
+    <Form.Field>
+    <input placeholder='Last Name'defaultValue={userDetails['last_name']}
+    onChange={(event) => {
+	event.preventDefault();
+	modifyUserInfo('last_name', event.target.value);
+    }
+    }
+    />
+    </Form.Field>
+	</Card.Content>
+
+	<Card.Content>
+    <Form.Field>
+	<input placeholder='Email (ex. user@site.com)' defaultValue={userDetails['email']}
+    onChange={(event) => {
+	event.preventDefault();
+	modifyUserInfo('email', event.target.value);
+    }
+    }
+    
+    />
+    </Form.Field>
+	</Card.Content>
+
+
+	<Card.Content>
+    <Form.Field>
+    <input placeholder='Phone (ex. 555-555-5555)' defaultValue={userDetails['phone']}
+    onChange={(event) => {
+	event.preventDefault();
+	modifyUserInfo('phone', event.target.value);
+    }
+    }
+    />
+    </Form.Field>
+    </Card.Content>
+
+    </Card>
+    </Form>
+    </Grid.Column>
+    </Grid.Row>
+    </Grid>
+            </Modal.Content>
+        <Modal.Actions>
+	<Button onClick={() => updateUserInfo()}>Update</Button>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+            </Modal.Actions>
+        </Modal>
+
+
+
+	<Grid centered stackable columns={2} padded>
         <Grid.Row>
             <Header as='h2'>
                 <Icon name='user'/>
@@ -110,11 +213,17 @@ function UserInfo() {
                 </Table>
             </Divider>
 
+        <Button onClick={() => setOpen(true)} fluid>Update</Button>   
+        </Grid.Column>
+
+
         </Grid.Column>
 
 
         <Button content='Logout' primary onClick={removeActiveUser}/>
     </Grid>
+	</Container>
+	
 }
 
 export default UserInfo;
