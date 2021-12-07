@@ -18,9 +18,7 @@ function HomePage() {
         localStorage.setItem('email', email);
 // Get data
 //        window.alert(localStorage.getItem(email))
-// // Remove data
-//         localStorage.removeItem(email);
-//         window.alert(localStorage.getItem(email))
+
     }
 
     //LOGIN
